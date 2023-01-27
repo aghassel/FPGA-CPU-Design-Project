@@ -1,1 +1,2 @@
-# Digital_Systems_Engineering
+# Digital Systems Engineering
+By: Abdellah Ghassel & Liam Salass
