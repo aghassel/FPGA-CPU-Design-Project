@@ -1,3 +1,4 @@
+//Inputs 64bit wire into two 32 bit outputs high and low
 module reg64bit(clr, clk, enable, D, Qhigh, Qlow);
 	input clr, clk, enable;
 	input [63:0]D;
