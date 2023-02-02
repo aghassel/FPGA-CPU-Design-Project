@@ -1,20 +1,23 @@
-module div32arr (a,b,q,r);
-	input wire [31:0] a,b;
-	output wire [31:0] q,r;
+
 	
+
 	
-module div1arr (a,bin,modein,cin,cout,s,modeout,bout);
+module arraydivider (a,bin,modein,cin,cout,s,modeout,bout);
 	input a, bin, modein, cin;
 	output cout, bout, s, modeout;
-	
+	wire xor1;
+	 
 	assign modeout = !(modein);
 	assign bout = !(bout);
-	assign 
+	assign xor1 = (modein^bin);
+	fulladder fa (.a(xor1), .b(a), .cin(cin), .cout(cout), .s(s));
+endmodule
+	
 	
 	
 endmodule
 	
-module fulladder(a,b,cout,cin,s)
+module fulladder(a,b,cin,cout,s)
 	input wire a, b, cin;
 	output wire cout, s;
 	
