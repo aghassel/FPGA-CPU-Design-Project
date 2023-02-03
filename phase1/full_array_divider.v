@@ -1,6 +1,4 @@
-
-	
-
+//Unfinished 
 	
 module arraydivider (a,bin,modein,cin,cout,s,modeout,bout);
 	input a, bin, modein, cin;
