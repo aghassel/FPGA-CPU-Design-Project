@@ -1,5 +1,4 @@
-
-
+//Carry look ahead adder
 module cla32bit (a,b,cin,s,cout);
 	input wire [31:0] a,b;
 	input wire cin;
