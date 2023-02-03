@@ -12,7 +12,7 @@ module ror32 (in, num_shifts, out);
             for (i=0; i < shifts, i = i + 1) begin : loop
                 if (in[31] = 0)
                     assign in = in>>1;
-                else if (in[31] = 1) begin
+                else begin
                     assign in = in>>1;
                     assign in[31] = 1;
                 end
