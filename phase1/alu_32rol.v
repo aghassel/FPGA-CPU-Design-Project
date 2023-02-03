@@ -5,9 +5,11 @@ module rol32 (in, num_shifts, out);
 	
     wire temp;
     genvar i;
+    integer shifts;
 	always @(*) begin
+        shifts = num_shifts;
         generate
-            for (i=0; i < num_shifts, i = i + 1) begin : loop
+            for (i=0; i < shifts, i = i + 1) begin : loop
                 assign temp = [31]in;
                 assign in = in<<1;
                 assign [0]in = temp;
