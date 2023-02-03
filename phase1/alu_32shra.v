@@ -14,9 +14,10 @@ module ror32 (in, num_shifts, out);
                     assign in = in>>1;
                 else if (in[31] = 1) begin
                     assign in = in>>1;
-                    assign [31]in = 1;
+                    assign in[31] = 1;
                 end
             end
+            assign out = in;
         endgenerate
 	end
 endmodule

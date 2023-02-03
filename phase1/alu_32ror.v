@@ -10,10 +10,11 @@ module ror32 (in, num_shifts, out);
         shifts = num_shifts;
         generate
             for (i=0; i < shifts, i = i + 1) begin : loop
-                assign temp = [0]in;
+                assign temp = in[0];
                 assign in = in>>1;
-                assign [31]in = temp;
+                assign in[31] = temp;
             end
+            assign out = in;
         endgenerate
 	end
 endmodule

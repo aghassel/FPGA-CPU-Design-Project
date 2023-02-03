@@ -10,10 +10,11 @@ module rol32 (in, num_shifts, out);
         shifts = num_shifts;
         generate
             for (i=0; i < shifts, i = i + 1) begin : loop
-                assign temp = [31]in;
+                assign temp = in[31];
                 assign in = in<<1;
-                assign [0]in = temp;
+                assign in[0] = temp;
             end
+            assign out = in;
         endgenerate
 	end
 endmodule
