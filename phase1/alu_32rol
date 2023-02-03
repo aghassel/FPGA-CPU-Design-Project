@@ -1,0 +1,17 @@
+module rol32 (in, num_shifts, out);
+	input wire [31:0] in;
+	input wire [31:0] num_shifts;
+	output reg [31:0] out;
+	
+    wire temp;
+    genvar i;
+	always @(*) begin
+        generate
+            for (i=0; i < num_shifts, i = i + 1) begin : loop
+                assign temp = [31]in;
+                assign in = in<<1;
+                assign [0]in = temp;
+            end
+        endgenerate
+	end
+endmodule
