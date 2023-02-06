@@ -31,7 +31,7 @@ module encoder_32_to_5 (input wire [31:0]ein, output reg [4:0] eout);
 		else if (ein[3]==1) eout=5'b00011;
 		else if (ein[2]==1) eout=5'b00010;
 		else if (ein[1]==1) eout=5'b00001;
-		else eout=5'b00000;
+		else eout=5'b00000;					//in the slides, the default case was 5'bx
 	end
 endmodule
 		
