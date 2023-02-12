@@ -4,7 +4,19 @@ module shra32 (in, num_shifts, out);
 	output reg [31:0] out;
 	
 	always @(*) begin
-		assign out[31:0] = in>>>num_shifts;
+
+        shifts = num_shifts;
+        generate
+            for (i=0; i < shifts, i = i + 1) begin : loop
+                if (in[31] = 0)
+                    assign in = in>>1;
+                else begin
+                    assign in = in>>1;
+                    assign in[31] = 1;
+                end
+            end
+            assign out = in;
+        endgenerate
 	end
 endmodule
 
