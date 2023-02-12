@@ -1,4 +1,4 @@
-//Booths algorithm
+//Booths algorithm --unfinished
 
 module multi32 (a,b,,cout,s);
 	input signed [31:0] a, b;
@@ -19,6 +19,8 @@ module multi32 (a,b,,cout,s);
 		present_state <= 1'b0;
 		temp <= 2'd0;
 		count <=	2'd0;
+
+	endmodule
 		
 		
 		 
