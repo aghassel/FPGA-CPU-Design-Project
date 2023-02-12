@@ -1,3 +1,4 @@
+
 module alu (A, B, opcode, clk, clr, control, C);
     input wire [31:0] A, B, control;
     input wire clk, clr;
@@ -97,3 +98,4 @@ module alu (A, B, opcode, clk, clr, control, C);
         end
     end
 endmodule
+

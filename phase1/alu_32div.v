@@ -13,7 +13,6 @@ endmodule
 	
 	
 	
-endmodule
 	
 module fulladder(a,b,cin,cout,s)
 	input wire a, b, cin;
