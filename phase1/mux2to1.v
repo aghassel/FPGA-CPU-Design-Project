@@ -1,4 +1,4 @@
-module mux32to1(data_1, data_2, out, select);
+module mux2to1(data_1, data_2, out, select);
 	input wire [31:0] data_1, data_2;
 	input wire select;
 	output reg [31:0]out;
