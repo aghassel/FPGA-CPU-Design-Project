@@ -36,7 +36,7 @@ encoder32to5 myEncoder(
 .ein[19](Zlowout),
 .ein[20](PCout),
 .ein[21](MDRout),
-.ein[22](R2out),
+.ein[22](InPortout),
 .ein[23](Cout),
 .eout(s)
 );
@@ -72,6 +72,17 @@ mux32to1 BusMux(
     .data21(MDRout),
     .data22(R2out),
     .data23(c_sign_extended),
+    /*
+    ask ta if we need to declare data 24-31 since they're empty
+    .data24(),
+    .data25()
+    .data26()
+    .data27()
+    .data28()
+    .data29()
+    .data30()
+    .data31()
+    */
     .s(s),
     .out(BusMuxOut)
     );
