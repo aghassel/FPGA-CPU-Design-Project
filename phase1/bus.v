@@ -1,8 +1,9 @@
-//bussy module
 //refer to diagram, get inputs for R0signal and for the contents of R0 (acc registers)
 module bus  #(parameter wordSize = 32)(
-    input [wordSize-1:0] R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out,
-    input [wordSize-1:0] HIout, LOout, Zhighout, Zlowout, PCout, MDRout, InPortout, Cout,
+    input R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out,
+    input HIout, LOout, Zhighout, Zlowout, PCout, MDRout, InPortout, Cout,
+    input [wordSize-1:0] BusMuxIn_R0, BusMuxIn_R1, BusMuxIn_BusMuxIn_R2, BusMuxIn_R3, BusMuxIn_R4, BusMuxIn_R5, BusMuxIn_R6, BusMuxIn_R7, BusMuxIn_R8, BusMuxIn_R9, BusMuxIn_R10, BusMuxIn_R11, BusMuxIn_R12, BusMuxIn_R13, BusMuxIn_R14, BusMuxIn_R15,
+    input [wordSize-1:0] BusMuxIn_HI, BusMuxIn_LO, BusMuxIn_Zhigh, BusMuxIn_Zlow, BusMuxIn_PC, BusMuxIn_MDR, BusMuxIn_InPort
     output reg [wordSize-1:0] BusMuxOut
 );
 
@@ -38,9 +39,16 @@ encoder32to5 myEncoder(
 .ein[21](MDRout),
 .ein[22](InPortout),
 .ein[23](Cout),
+.ein[24](0),
+.ein[25](0),
+.ein[26](0),
+.ein[27](0),
+.ein[28](0),
+.ein[29](0),
+.ein[30](0),
+.ein[31](0),
 .eout(s)
 );
-
 
 mux32to1 BusMux(
     /*
@@ -48,42 +56,40 @@ mux32to1 BusMux(
 	input wire [4:0] s;
 	output reg [31:0] out;
     */
-    .data0(R0out),
-    .data1(R1out),
-    .data2(R2out),
-    .data3(R3out),
-    .data4(R4out),
-    .data5(R5out),
-    .data6(R6out),
-    .data7(R7out),
-    .data8(R8out),
-    .data9(R9out),
-    .data10(R10out),
-    .data11(R11out),
-    .data12(R12out),
-    .data13(R13out),
-    .data14(R14out),
-    .data15(R15out),
-    .data16(HIout),
-    .data17(LOout),
-    .data18(Zhighout),
-    .data19(Zlowout),
-    .data20(PCout),
-    .data21(MDRout),
-    .data22(R2out),
+    .data0(BusMuxIn_R0),
+    .data1(BusMuxIn_R1),
+    .data2(BusMuxIn_R2),
+    .data3(BusMuxIn_R3),
+    .data4(BusMuxIn_R4),
+    .data5(BusMuxIn_R5),
+    .data6(BusMuxIn_R6),
+    .data7(BusMuxIn_R7),
+    .data8(BusMuxIn_R8),
+    .data9(BusMuxIn_R9),
+    .data10(BusMuxIn_R10),
+    .data11(BusMuxIn_R11),
+    .data12(BusMuxIn_R12),
+    .data13(BusMuxIn_R13),
+    .data14(BusMuxIn_R14),
+    .data15(BusMuxIn_R15),
+    .data16(BusMuxIn_HI),
+    .data17(BusMuxIn_LO),
+    .data18(BusMuxIn_Zhigh),
+    .data19(BusMuxIn_Zlow),
+    .data20(BusMuxIn_PC),
+    .data21(BusMuxIn_MDR),
+    .data22(BusMuxIn_InPort),
     .data23(c_sign_extended),
-    /*
-    ask ta if we need to declare data 24-31 since they're empty
-    .data24(),
-    .data25()
-    .data26()
-    .data27()
-    .data28()
-    .data29()
-    .data30()
-    .data31()
-    */
+    .data24(0),
+    .data25(0),
+    .data26(0),
+    .data27(0),
+    .data28(0),
+    .data29(0),
+    .data30(0),
+    .data31(0),
     .s(s),
     .out(BusMuxOut)
     );
+    
     endmodule
