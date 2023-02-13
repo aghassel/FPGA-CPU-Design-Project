@@ -3,6 +3,7 @@ module alu (A, B, opcode, clk, clr, control, C);
     input wire clk, clr;
     input wire [4:0] opcode;
     output [63:0] C;
+    
     reg[31:0] neg_reg, nor_reg, or_reg, not_reg, xor_reg, and_reg, shl_reg, shr_reg, shra_reg, ror_reg, rol_reg, add_reg, sub_reg,
     add_cout_reg, sub_cout_reg;
     reg [63:0] mul_reg, div_reg;

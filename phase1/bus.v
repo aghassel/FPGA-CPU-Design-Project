@@ -1,5 +1,5 @@
 //bussy module
-
+//refer to diagram, get inputs for R0signal and for the contents of R0 (acc registers)
 module bus  #(parameter wordSize = 32)(
     input [wordSize-1:0] R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out,
     input [wordSize-1:0] HIout, LOout, Zhighout, Zlowout, PCout, MDRout, InPortout, Cout,
