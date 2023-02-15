@@ -1,6 +1,6 @@
 module neg32 (in, out);
-	input wire [31:0] in;
-	output reg[31:0] out;
+	input wire signed[31:0] in;
+	output reg signed[31:0] out;
 	wire [31:0] temp;
 	wire cout;
 	
