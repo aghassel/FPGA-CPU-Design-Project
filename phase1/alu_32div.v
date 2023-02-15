@@ -1,23 +1,13 @@
-//Unfinished 
-	
-module arraydivider (a,bin,modein,cin,cout,s,modeout,bout);
-	input a, bin, modein, cin;
-	output cout, bout, s, modeout;
-	wire xor1;
-	 
-	assign modeout = !(modein);
-	assign bout = !(bout);
-	assign xor1 = (modein^bin);
-	fulladder fa (.a(xor1), .b(a), .cin(cin), .cout(cout), .s(s));
-endmodule
-	
-	
-	
-	
-module fulladder(a,b,cin,cout,s)
-	input wire a, b, cin;
-	output wire cout, s;
-	
-	assign s = (a^b)^cin;
-	assign cout = (a&b)|(b&cin)|(ci&a);
+module div #(parameter wordSize = 32)(
+	input [wordsize-1:0]dividend, divisor,
+	output [wordSize*2-1:0] out
+	);
+	//Z register is 64-bit: remainder in the higher byte, and quotient in the lower byte) operation
+	input wire h, l;
+
+	always @(*) begin
+		h = dividend % divisor		//remainder
+		l = (dividend - h) / divisor //quotient
+		out = {h,l} //concatenate high and low in output
+	end
 endmodule
