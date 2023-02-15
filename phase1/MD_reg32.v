@@ -6,21 +6,20 @@ module MD_reg32 #(parameter wordSize = 32)(
 
     wire [wordSize-1:0] D;
 
-always@(*) begin
-mux2to1 MDMux(
+	mux2to1 MDMux(
         .data_1(BusMuxOut),
         .data_2(Mdatain),
         .select(read),
         .out(D)
-);
+	);
 
-reg32bit MDR(
-    .clr(clr),
-    .clk(clk),
-    .enable(MDRin),
-    .D(D),
-    .Q(Q)
-);
+	reg32bit MDR(
+		.clr(clr),
+		.clk(clk),
+		.enable(MDRin),
+		.D(D),
+		.Q(Q)
+	);
 
-end
-    endmodule
+	
+endmodule
