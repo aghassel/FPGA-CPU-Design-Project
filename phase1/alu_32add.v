@@ -9,6 +9,7 @@ module cla32bit (a,b,cin,s,cout);
 	cla16bit cla1 (.a(a[15:0]), .b(b[15:0]), .s(s[15:0]), .cin(cin), .cout(c1));
 	cla16bit cla2 (.a(a[31:16]), .b(b[31:16]), .s(s[31:16]), .cin(c1), .cout(cout));
 
+
 endmodule
 
 

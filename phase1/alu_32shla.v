@@ -1,4 +1,4 @@
-module shl32 (in, num_shifts, out);
+module shla32 (in, num_shifts, out);
 	input wire [31:0] in;
 	input wire [31:0] num_shifts;
 	output reg [31:0] out;
