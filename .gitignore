@@ -1,0 +1,8 @@
+# Don't track content of these folders
+phase1/db/
+phase1/output_files
+
+*.bak
+*.qpf
+*.qsf
+*.qws

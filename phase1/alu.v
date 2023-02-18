@@ -2,7 +2,7 @@ module alu (A, B, opcode, clk, clr, control, C);
     input wire [31:0] A, B, control;
     input wire clk, clr;
     input wire [4:0] opcode;
-    output [63:0] C;
+    output reg [63:0] C;
     
     reg[31:0] neg_reg, nor_reg, or_reg, not_reg, xor_reg, and_reg, shl_reg, shr_reg, shra_reg, ror_reg, rol_reg, add_reg, sub_reg,
     add_cout_reg, sub_cout_reg;
@@ -16,7 +16,7 @@ module alu (A, B, opcode, clk, clr, control, C);
     alu_32add addop (.a(A), .b(B), .cin(1'd0), .s(add_reg), .cout(add_cout_reg));
     alu_32sub subop (.a(A), .b(B), .cin(1'd0), .s(sub_reg), .cout(sub_cout_reg));
     //alu_32mul mulop (.a(A), .b(B), .s(mul_reg));
-    //alu_32div divop (.a(A), .b(B), .s(mul_reg));
+    alu_32div divop (.dividend(A), .divisor(B), .out(mul_reg));
     alu_32and andop (.a(A), .b(B), .c(and_reg));
     alu_32or orop (.a(A), .b(B), .c(or_reg));
     alu_32xor xorop (.a(A), .b(B), .c(xor_reg));

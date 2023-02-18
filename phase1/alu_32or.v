@@ -3,12 +3,11 @@
 	output reg [31:0]c;
 	genvar i;
 	
-	always @(*)begin
-		generate
-			for (i = 0; i < 31; i = i + 1) begin : loop
-				assign c[i] = ((a[i])|(b[i]));
-			end
-		endgenerate
-	end
+	generate
+		for (i = 0; i < 31; i = i + 1) begin : loop
+			assign c[i] = ((a[i])|(b[i]));
+		end
+	endgenerate
+	
 endmodule
 		
