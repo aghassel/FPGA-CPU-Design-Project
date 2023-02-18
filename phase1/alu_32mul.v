@@ -1,8 +1,8 @@
 //Booths algorithm --unfinished
 
-module multi32 (a,b,,cout,s);
+module multi32 (a,b,cout,s);
 	input signed [31:0] a, b;
-	output signed [63:0] z);
+	output signed [63:0] z;
 	output wire c;
 	reg signed [31:0] z, z_next, z_temp;
 	reg next_state, present_state;
@@ -19,7 +19,7 @@ module multi32 (a,b,,cout,s);
 		present_state <= 1'b0;
 		temp <= 2'd0;
 		count <=	2'd0;
-
+	end
 	endmodule
 		
 		
