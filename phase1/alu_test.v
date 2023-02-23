@@ -19,11 +19,11 @@ module alu #(parameter wordSize = 32)(
             add: begin
                 alu_32add myAdd (.a(Y), .b(B), .cin(1'd0), .s(temp32_out), .cout(temp));
                 C [31:0] <= temp32_out[31:0];
-                C [63:32] <= 32'd0 ? temp_out[31] == 0 : 32'd1; //check this part
+                C [63:32] <= (temp32_out[31] == 0) ? 32'd0 : 32'd1;
             end
             sub: begin
                 // Calculate two's complement of b
-                wire [31:0] neg_b [31:0] <= ~B +1;
+                wire [wordSize-1:0] neg_b = ~B + 1;
 
                 alu_32add mySub (.a(Y), .b(neg_b), .cin(1'd0), .s(temp32_out), .cout(temp));
                 C [31:0] <= temp32_out[31:0];
