@@ -18,21 +18,24 @@ module alu #(parameter wordSize = 32)(
         case(opcode)
             add: begin
                 alu_32add myAdd (.a(Y), .b(B), .cin(1'd0), .s(temp32_out), .cout(temp));
-                C [31:0] <= temp_out[31:0];
+                C [31:0] <= temp32_out[31:0];
                 C [63:32] <= 32'd0 ? temp_out[31] == 0 : 32'd1; //check this part
             end
             sub: begin
-                alu_32sub mySub (.a(Y), .b(B), .cin(1'd0), .s(temp32_out), .cout(temp));
-                C [31:0] <= sub_reg [31:0];
+                // Calculate two's complement of b
+                wire [31:0] neg_b [31:0] <= ~B +1;
+
+                alu_32add mySub (.a(Y), .b(neg_b), .cin(1'd0), .s(temp32_out), .cout(temp));
+                C [31:0] <= temp32_out[31:0];
                 C [63:32] <= 32'd0;
             end
             // mul: begin
             //     alu_32mul myMul (.a(A), .b(B), .s(temp64_out));
-            //     C [63:0] <= mul_reg [63:0];
+            //     C [63:0] <= temp64_out [63:0];
             // end
             div: begin
                 alu_32div myDiv (.dividend(A), .divisor(B), .out(temp64_out));
-                C [63:0] <= div_reg[63:0];
+                C [63:0] <= temp64_out[63:0];
             end
             shr: begin
                 C [31:0] <= Y >> B;
