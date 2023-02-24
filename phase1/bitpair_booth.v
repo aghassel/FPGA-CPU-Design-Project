@@ -6,7 +6,7 @@ module bitpair (
 wire signed [2:0] bitPattern;
 
 //Initialization
-multiplicand = multiplicand << 1;
+multiplicand = multiplicand <<< 1; //this may not be allowed in verilog since we are changing the input
 product = 64'b0;
 
 for (int i = 0; i < 16; i = i + 1) begin
@@ -21,11 +21,11 @@ for (int i = 0; i < 16; i = i + 1) begin
     // -2 x M
     3'b100: product = product - (multiplicand + multiplicand);
     // -1 x M
-    3'b101, 3'b110: product - multiplicand;
+    3'b101, 3'b110: product = product - multiplicand;
     endcase
 
-    multiplicand = multiplicand << 2;
-    multiplier = multiplier >> 2;
+    multiplicand = multiplicand <<< 2;
+    multiplier = multiplier >>> 2;
 end
 
 endmodule
