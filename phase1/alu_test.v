@@ -4,7 +4,7 @@ module alu #(parameter wordSize = 32)(
     //5-bit opcode
     input wire [4:0] opcode,
     //64-bit output register C
-    output [(wordSize*2)-1:0] reg C
+    output reg [(wordSize*2)-1:0] C
 );
 
     parameter   add = 5'b00001, sub = 5'b00010, mul = 5'b00011, div = 5'b00100, shr = 5'b00101, shl = 5'b00110, shra = 5'b00111, 
@@ -23,7 +23,7 @@ module alu #(parameter wordSize = 32)(
             end
             sub: begin
                 // Calculate two's complement of b
-                wire [wordSize-1:0] neg_b = ~B + 1;
+                wire [wordSize-1:0] neg_b <= ~B + 1;
 
                 alu_32add mySub (.a(Y), .b(neg_b), .cin(1'd0), .s(temp32_out), .cout(temp));
                 C [31:0] <= temp32_out[31:0];
