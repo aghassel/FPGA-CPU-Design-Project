@@ -84,7 +84,7 @@ module alu (A, B, opcode, clk, clr, control, C);
                     C [63:32] <= 32'd0;
                 end
                 log_nor: begin
-                    C [31:0] <= shr_nor[31:0];
+                    C [31:0] <= nor_reg[31:0];
                     C [63:32] <= 32'd0;
                 end
                 log_not: begin
