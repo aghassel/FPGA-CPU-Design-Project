@@ -1,6 +1,6 @@
 module not32 (in, out);
 	input wire signed[31:0] in;
-	output reg signed[31:0] out;
+	output wire signed[31:0] out;
 	
 	genvar i;
 	generate 

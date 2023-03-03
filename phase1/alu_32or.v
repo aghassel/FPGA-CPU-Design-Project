@@ -1,6 +1,6 @@
  module or32 (a,b,c);
 	input wire [31:0]a,b;
-	output reg [31:0]c;
+	output wire [31:0]c;
 	genvar i;
 	
 	generate
