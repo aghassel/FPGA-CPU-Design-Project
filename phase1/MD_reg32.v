@@ -1,5 +1,5 @@
 module MD_reg32 #(parameter wordSize = 32)(
-    input clk, clr, read, MDRin,
+    input clr, clk, read, MDRin,
     input [wordSize-1:0] BusMuxOut, Mdatain,
     output reg [wordSize-1:0] Q
 );
