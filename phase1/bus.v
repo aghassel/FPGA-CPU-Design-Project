@@ -1,20 +1,20 @@
-//refer to diagram, get inputs for R0signal and for the contents of R0 (acc registers)
 module bus  #(parameter wordSize = 32)(
+    //encoder signals
     input R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out,
     input HIout, LOout, Zhighout, Zlowout, PCout, MDRout, InPortout, Cout,
+    //multiplexer registers
     input [wordSize-1:0] BusMuxIn_R0, BusMuxIn_R1, BusMuxIn_R2, BusMuxIn_R3, BusMuxIn_R4, BusMuxIn_R5, BusMuxIn_R6, BusMuxIn_R7, BusMuxIn_R8, BusMuxIn_R9, BusMuxIn_R10, BusMuxIn_R11, BusMuxIn_R12, BusMuxIn_R13, BusMuxIn_R14, BusMuxIn_R15,
     input [wordSize-1:0] BusMuxIn_HI, BusMuxIn_LO, BusMuxIn_Zhigh, BusMuxIn_Zlow, BusMuxIn_PC, BusMuxIn_MDR, BusMuxIn_InPort,
     output reg [wordSize-1:0] BusMuxOut
 );
 
-wire [5:0] s;
+wire [4:0] s;
 
 wire [wordSize-1:0] c_sign_extended;
 
 assign c_sign_extended = (Cout == 0) ? 32'd0 : 32'd1;
 
-encoder32to5 myEncoder(
-//input wire [31:0]ein, output reg [4:0] eout
+encoder32to5 myEncoder(    
 .ein[0](R0out),
 .ein[1](R1out),
 .ein[2](R2out),

@@ -1,4 +1,5 @@
-module alu #(parameter wordSize = 32)(
+module alu_test #(parameter wordSize = 32)(
+    input wire clk, clr,
     //32-bit input registers A, B, Y (temp reg)
     input wire [wordSize-1:0] A, B, Y,
     //5-bit opcode
@@ -50,11 +51,11 @@ module alu #(parameter wordSize = 32)(
                 C [63:32] <= 32'd0;
             end
             ror: begin
-                C [31:0] <= {Y[0], A[31]};
+                C [31:0] <= (in >> num_shifts) | (in << ~num_shifts);
                 C [63:32] <= 32'd0;
             end
             rol: begin
-                C [31:0] <= {Y[30:0], A[31]};
+                C [31:0] <= (in << num_shifts) | (in >> ~num_shifts);
                 C [63:32] <= 32'd0;
             end
             log_and: begin
