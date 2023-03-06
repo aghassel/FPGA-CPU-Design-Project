@@ -14,40 +14,10 @@ wire [wordSize-1:0] c_sign_extended;
 
 assign c_sign_extended = (Cout == 0) ? 32'd0 : 32'd1;
 
-encoder32to5 myEncoder(    
-.ein[0](R0out),
-.ein[1](R1out),
-.ein[2](R2out),
-.ein[3](R3out),
-.ein[4](R4out),
-.ein[5](R5out),
-.ein[6](R6out),
-.ein[7](R7out),
-.ein[8](R8out),
-.ein[9](R9out),
-.ein[10](R10out),
-.ein[11](R11out),
-.ein[12](R12out),
-.ein[13](R13out),
-.ein[14](R14out),
-.ein[15](R15out),
-.ein[16](HIout),
-.ein[17](LOout),
-.ein[18](Zhighout),
-.ein[19](Zlowout),
-.ein[20](PCout),
-.ein[21](MDRout),
-.ein[22](InPortout),
-.ein[23](Cout),
-.ein[24](0),
-.ein[25](0),
-.ein[26](0),
-.ein[27](0),
-.ein[28](0),
-.ein[29](0),
-.ein[30](0),
-.ein[31](0),
-.eout(s)
+encoder32to5 myEncoder (
+  .ein({R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out,
+        R11out, R12out, R13out, R14out, R15out, HIout, LOout, Zhighout, Zlowout, PCout, MDRout, InPortout, Cout, 0, 0, 0, 0, 0, 0, 0, 0}),
+  .eout(s)
 );
 
 mux32to1 BusMux(

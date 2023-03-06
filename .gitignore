@@ -1,6 +1,8 @@
 # Don't track content of these folders
 phase1/db/
 phase1/output_files
+phase1/incremental_db/
+phase1/simulation/
 
 *.bak
 *.qpf
