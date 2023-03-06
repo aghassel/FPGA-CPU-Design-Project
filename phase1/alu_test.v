@@ -35,7 +35,7 @@ module alu_test #(parameter wordSize = 32)(
             //     C [63:0] <= temp64_out [63:0];
             // end
             div: begin
-                alu_32div myDiv (.dividend(A), .divisor(B), .out(temp64_out));
+                alu_32div myDiv (.dividend(Y), .divisor(B), .out(temp64_out));
                 C [63:0] <= temp64_out[63:0];
             end
             shr: begin
@@ -51,11 +51,11 @@ module alu_test #(parameter wordSize = 32)(
                 C [63:32] <= 32'd0;
             end
             ror: begin
-                C [31:0] <= (in >> num_shifts) | (in << ~num_shifts);
+                C [31:0] <= (Y >> B) | (Y << ~B);
                 C [63:32] <= 32'd0;
             end
             rol: begin
-                C [31:0] <= (in << num_shifts) | (in >> ~num_shifts);
+                C [31:0] <= (Y << B) | (Y >> ~B);
                 C [63:32] <= 32'd0;
             end
             log_and: begin
