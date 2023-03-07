@@ -21,7 +21,7 @@ module alu_test #(parameter wordSize = 32)(
 	alu_32add mySub (.a(Y), .b(neg_b), .cin(1'd0), .s(sub32_out), .cout(temp));
 	
 	alu_32div myDiv (.dividend(Y), .divisor(B), .out(div64_out));
-	alu_32mul myMul (.multiplicand(A), .multiplier(B), .product(mul64_out));
+	alu_32mul myMul (.multiplicand(Y), .multiplier(B), .product(mul64_out));
 	
     always @(posedge clk) begin
 	 
