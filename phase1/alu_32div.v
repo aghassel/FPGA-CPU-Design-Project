@@ -1,28 +1,28 @@
-module divider(
-    input [31:0] dividend_input,
-    input [31:0] divisor_input,
-    output reg [31:0] quotient_output,
-    output reg [31:0] remainder_output
+module div32(
+    input [31:0] D,
+    input [31:0] O,
+    output reg [31:0] Q,
+    output reg [31:0] R
 );
 always @* begin
     integer i;
     
     // initialize remainder with dividend
-    remainder_output = dividend_input;
+    R = D;
     
     // initialize quotient with 0
-    quotient_output = 0;
+    Q = 0;
     
     // iterate from MSB to LSB
     for (i = 31; i >= 0; i=i-1) begin
         
         // check if remainder is greater than or equal to divisor shifted left by i bits
-        if (remainder_output >= (divisor_input << i)) begin
+        if (R >= (O << i)) begin
 		  // subtract shifted divisor from remainder
-            remainder_output = remainder_output - (divisor_input << i);
+            R = R - (O << i);
             
             // set the ith bit of quotient to 1
-            quotient_output[i] = 1'b1;
+            Q[i] = 1'b1;
         end
     end
 end
