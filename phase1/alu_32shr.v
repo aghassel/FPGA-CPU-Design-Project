@@ -4,6 +4,6 @@ module shr32 (in, num_shifts, out);
 	output reg signed[31:0] out;
 	
 	always @(*) begin
-		assign out[31:0] = in>>num_shifts;
+		out[31:0] = in>>num_shifts;
 	end
 endmodule

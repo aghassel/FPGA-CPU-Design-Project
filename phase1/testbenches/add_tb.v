@@ -4,7 +4,7 @@ module add_tb;
     reg [31:0] A, B, control;
     reg [4:0] opcode;
     reg clk, clr;
-    reg [63:0] C;
+    wire [63:0] C;
     parameter add_opcode = 5'b00001;
 
     alu alu_test(.A(A), .B(B), .opcode(opcode), .clk(clk), .clr(clr), .control(control), .C(C));

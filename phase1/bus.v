@@ -15,8 +15,13 @@ wire [wordSize-1:0] c_sign_extended;
 assign c_sign_extended = (Cout == 0) ? 32'd0 : 32'd1;
 
 encoder32to5 myEncoder (
+<<<<<<< HEAD
+  .ein({R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out,
+        R11out, R12out, R13out, R14out, R15out, HIout, LOout, Zhighout, Zlowout, PCout, MDRout, InPortout, Cout, 0, 0, 0, 0, 0, 0, 0, 0}),
+=======
   .ein({8'b0, Cout, InPortout, MDRout, PCout, Zhighout, Zlowout, HIout, LOout, 
         R15out, R14out, R13out, R12out, R11out, R10out, R9out, R8out, R7out, R6out, R5out, R4out, R3out, R2out, R1out, R0out}),
+>>>>>>> ae864053c98fd43d18bd85006b5e2348d1a6d39c
   .eout(s)
 );
 

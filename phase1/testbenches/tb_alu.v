@@ -1,36 +1,34 @@
-`timescale 1ns / 1ps  
+`timescale 1ns/1ns
 
 module tb_alu;
 
-//Inputs
- reg[31:0] A, B;
- reg[4:0] ALU_Sel;  //opcode
-
-//Outputs
- wire[7:0] ALU_Out;
- wire CarryOut;
- // Verilog code for ALU
- integer i;
- alu test_unit(
-            A,B,  // ALU 8-bit Inputs                 
-            ALU_Sel,// ALU Selection
-            ALU_Out, // ALU 8-bit Output
-            CarryOut // Carry Out Flag
-     );
+    parameter wordSize = 32;
+    
+    reg clk = 0;
+    reg clr = 0;
+    reg [wordSize-1:0] A = 16;
+    reg [wordSize-1:0] B = 1;
+    reg [4:0] opcode;
+    wire [(wordSize*2)-1:0] C;
+    
+    alu_test #(.wordSize(wordSize)) dut (
+        .clk(clk),
+        .clr(clr),
+        .Y(A),
+        .B(B),
+        .opcode(opcode),
+        .C(C)
+    );
+    
     initial begin
-    // hold reset state for 100 ns.
-      A = 8'd5;
-      B = 8'd3;
-      ALU_Sel = 4'h0;
-      
-      for (i=0;i<15;i=i+1)
-      begin
-       ALU_Sel = ALU_Sel + 8'h01; //change the opcode after 10 ns delay
-       #10;
-      end;
-      
-      A = 8'hF6;
-      B = 8'h0A;
-      
+        $display("Opcode\tOutput");
+        for (opcode = 1; opcode < 16; opcode = opcode + 1) begin
+            $display("%d\t%d", opcode, C);
+            #10;
+        end
+        $finish;
     end
+    
+    always #5 clk = ~clk;
+    
 endmodule
