@@ -1,3 +1,5 @@
+`timescale 1ns/10ps
+
 module alu (A, B, opcode, clk, clr, control, C);
     input wire [31:0] A, B, control;
     input wire clk, clr;
@@ -17,7 +19,7 @@ module alu (A, B, opcode, clk, clr, control, C);
     cla32bit addop (.a(A), .b(B), .cin(1'd0), .s(add_reg), .cout(add_cout_reg[0]));
     sub32 subop (.a(A), .b(B), .cin(1'd0), .s(sub_reg), .cout(sub_cout_reg));
     mul32 mulop (.multiplicand(A), .multiplier(B), .product(mul_reg));
-    div divop (.dividend(A), .divisor(B), .out(div_reg));
+    div32 divop (.D(A), .O(B), .Q(div_reg[63:32]), .R(div_reg[31:0]));
     and32 andop (.a(A), .b(B), .c(and_reg));
     or32 orop (.a(A), .b(B), .c(or_reg));
     xor32 xorop (.a(A), .b(B), .c(xor_reg));

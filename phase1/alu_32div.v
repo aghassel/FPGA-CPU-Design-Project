@@ -10,7 +10,6 @@ always @* begin
     // initialize remainder with dividend
     R = D;
     
-    // initialize quotient with 0
     Q = 0;
     
     // iterate from MSB to LSB
