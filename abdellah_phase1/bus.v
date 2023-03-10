@@ -15,7 +15,7 @@ wire [wordSize-1:0] c_sign_extended;
 assign c_sign_extended = (Cout == 0) ? 32'd0 : 32'd1;
 
 encoder32to5 myEncoder (
-	.ein({8'b0, Cout, InPortout, MDRout, PCout, ZHighOut, ZLowOut, HIout, LOout, 
+	.ein({8'b0, Cout, InPortout, MDRout, PCout, ZLowOut, ZHighOut, LOout, HIout,
         R15out, R14out, R13out, R12out, R11out, R10out, R9out, R8out, R7out, R6out, R5out, R4out, R3out, R2out, R1out, R0out}),
 	.eout(s)
 );
@@ -38,10 +38,10 @@ mux32to1 BusMux(
     .data13(BusMuxIn_R13),
     .data14(BusMuxIn_R14),
     .data15(BusMuxIn_R15),
-    .data16(BusMuxIn_LO),
-    .data17(BusMuxIn_HI),
-    .data18(BusMuxIn_Zlow),
-    .data19(BusMuxIn_Zhigh),
+    .data16(BusMuxIn_HI),
+    .data17(BusMuxIn_LO),
+    .data18(BusMuxIn_Zhigh),
+    .data19(BusMuxIn_Zlow),
     .data20(BusMuxIn_PC),
     .data21(BusMuxIn_MDR),
     .data22(BusMuxIn_InPort),
