@@ -1,45 +1,45 @@
-module div32nr(input [31:0] A, M, output reg [63:0] out);
+module alu_32div(input [31:0] divisor, dividend, output reg [63:0] out);
     integer i; 
     reg [63:0] Q; // Q reg
-    reg [31:0] divisor;
+    reg [31:0] tempDivisor;
 
     always @(*) begin
         //If negative values, change to positive value, then flip bits at end
-        if (A[31])
-            Q[31:0] = -A;
-		else	
-			Q[31:0] = A;  
+        if (divisor[31])
+            Q[31:0] = -divisor;
+        else    
+            Q[31:0] = divisor;  
             
-        if (M[31])
-            divisor = -M;
-		else    
-			divisor = M;
-				
+        if (dividend[31])
+            tempDivisor = -dividend;
+        else    
+            tempDivisor = dividend;
+                
         for (i = 0; i < 32; i = i + 1) begin // iterate through each bit of quotient
 
-            // Shift A and Q left one binary position
+            // Shift divisor and Q left one binary position
             Q = Q << 1;
 
-            // If A ≥ 0, subtract M from A; otherwise, add M to A.
+            // If divisor â‰¥ 0, subtract dividend from divisor; otherwise, add dividend to divisor.
 
             if (Q[63])
-                Q = Q[63:32] + divisor;
+                Q[63:32] = Q[63:32] + tempDivisor;
             else 
-                Q = Q[63:32] - divisor;
+                Q[63:32] = Q[63:32] - tempDivisor;
 
-            // Now, If A ≥ 0, set q0 to 1; otherwise, set q0 to 0
+            // Now, If divisor â‰¥ 0, set q0 to 1; otherwise, set q0 to 0
             if (Q[63])
                 Q[0] = 0;
             else
                 Q[0] = 1;
         end 
     
-        //If A < 0, add M to A (this is to make sure that the positive remainder is in A at the end of n cycles)
+        //If divisor < 0, add dividend to divisor (this is to make sure that the positive remainder is in divisor at the end of n cycles)
         if (Q[63])
-            Q[63:32] = Q[63:32] + divisor;
+            Q[63:32] = Q[63:32] + tempDivisor;
 
         //If negative values, change to positive value, then flip bits at end
-        if ((A[31])||(M[31]))
+        if ((divisor[31])||(dividend[31]))
             Q[31:0] = -Q[31:0];
 
         out = Q;

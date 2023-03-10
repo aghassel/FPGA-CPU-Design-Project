@@ -228,10 +228,9 @@ module datapath_tb;
             T4: begin
                 #10
                 R3out <= 1;
-                
-					 opcode <= 5'b00100;
-					 #50
-					 Zin <= 1;
+                opcode <= 5'b00100;
+                #50
+                Zin <= 1;
                 #15
                 R3out <=0;
                 Zin <= 0;
