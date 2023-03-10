@@ -1,8 +1,9 @@
 module datapath (
-input clr, clk, enable,
-input R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in, 
-input HIin, LOin, ZHighIn, ZLowIn, incPC, MARin, MDRin, Mdatain, Read, InPortin, Cin, Yin,
-input [4:0] opcode
+input clr, clk,
+input R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in, 
+input HIin, LOin, Zin, incPC, MARin, MDRin, Read, InPortin, Cin, Yin,
+input [4:0] opcode,
+input [31:0] Mdatain
 );
 
 wire [31:0] BusMuxIn_R0, 
@@ -29,33 +30,35 @@ wire [31:0] BusMuxIn_HI,
             BusMuxIn_PC, 
             BusMuxIn_MDR, 
             BusMuxIn_InPort,
+            Yout,
+
             BusMuxOut;
 
 wire [63:0] CRegOut;
 wire [4:0]  encoderSignal;  
 
 
-reg32bit R0 (clr, clk, 1'd0, BusMuxOut, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
-reg32bit R2 (clr, clk, R3_in, BusMuxOut, BusMuxIn_R2);  
-reg32bit R1 (clr, clk, R2_in, BusMuxOut, BusMuxIn_R1);  
-reg32bit R3 (clr, clk, R4_in, BusMuxOut, BusMuxIn_R3);  
-reg32bit R4 (clr, clk, R5_in, BusMuxOut, BusMuxIn_R4);  
-reg32bit R5 (clr, clk, R6_in, BusMuxOut, BusMuxIn_R5);  
-reg32bit R6 (clr, clk, R7_in, BusMuxOut, BusMuxIn_R6);  
-reg32bit R7 (clr, clk, R8_in, BusMuxOut, BusMuxIn_R7);  
-reg32bit R8 (clr, clk, R9_in, BusMuxOut, BusMuxIn_R8);  
-reg32bit R9 (clr, clk, R10_in, BusMuxOut, BusMuxIn_R9);  
-reg32bit R10 (clr, clk, R11_in, BusMuxOut, BusMuxIn_R10);  
-reg32bit R11 (clr, clk, R12_in, BusMuxOut, BusMuxIn_R11);  
-reg32bit R12 (clr, clk, R13_in, BusMuxOut, BusMuxIn_R12);  
-reg32bit R13 (clr, clk, R14_in, BusMuxOut, BusMuxIn_R13);  
-reg32bit R14 (clr, clk, R15_in, BusMuxOut,  BusMuxIn_R14);  
-reg32bit R15 (clr, clk, R16_in, BusMuxOut,  BusMuxIn_R15); 
+reg32bit R0 (clr, clk, R0in, 1'd0, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
+reg32bit R1 (clr, clk, R1in, BusMuxOut, BusMuxIn_R1);
+reg32bit R2 (clr, clk, R2in, BusMuxOut, BusMuxIn_R2);    
+reg32bit R3 (clr, clk, R3in, BusMuxOut, BusMuxIn_R3);  
+reg32bit R4 (clr, clk, R4in, BusMuxOut, BusMuxIn_R4);  
+reg32bit R5 (clr, clk, R5in, BusMuxOut, BusMuxIn_R5);  
+reg32bit R6 (clr, clk, R6in, BusMuxOut, BusMuxIn_R6);  
+reg32bit R7 (clr, clk, R7in, BusMuxOut, BusMuxIn_R7);  
+reg32bit R8 (clr, clk, R8in, BusMuxOut, BusMuxIn_R8);  
+reg32bit R9 (clr, clk, R9in, BusMuxOut, BusMuxIn_R9);  
+reg32bit R10 (clr, clk, R10in, BusMuxOut, BusMuxIn_R10);  
+reg32bit R11 (clr, clk, R11in, BusMuxOut, BusMuxIn_R11);  
+reg32bit R12 (clr, clk, R12in, BusMuxOut, BusMuxIn_R12);  
+reg32bit R13 (clr, clk, R13in, BusMuxOut, BusMuxIn_R13);  
+reg32bit R14 (clr, clk, R14in, BusMuxOut,  BusMuxIn_R14);  
+reg32bit R15 (clr, clk, R15in, BusMuxOut,  BusMuxIn_R15); 
 
 reg32bit HI (clr, clk, HIin, BusMuxOut, BusMuxIn_HI); 
 reg32bit LO (clr, clk, LOin, BusMuxOut, BusMuxIn_LO);
-reg32bit ZHigh (clr, clk, ZHighIn, CRegOut[63:32], BusMuxIn_Zhigh);
-reg32bit ZLow (clr, clk, ZLowIn, CRegOut[31:0], BusMuxIn_Zlow);
+reg32bit ZHigh (clr, clk, Zin, CRegOut[63:32], BusMuxIn_Zhigh);
+reg32bit ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
 reg32bit PC (clr, clk, incPC, BusMuxOut, BusMuxIn_PC);  
 MD_reg32 MDR (clr, clk, Read, MDRin, BusMuxOut, Mdatain, BusMuxIn_MDR); //special MDR reg
 
@@ -121,9 +124,8 @@ bus myBus (
 alu_test myAlu(
 	.clk(clk),
 	.clr(clr), 
-	.A(BusMuxOut), //A is passed the contents from the bus
 	.B(BusMuxOut),
-    .Y(Yout),
+    .A(Yout),
 	.opcode(opcode),
 	.C(CRegOut)
 	);

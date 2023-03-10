@@ -1,7 +1,7 @@
 module alu_test #(parameter wordSize = 32)(
     input wire clk, clr,
-    //32-bit input registers A, B, Y (temp reg)
-    input wire [wordSize-1:0] A, B, Y,
+    //32-bit input registers A, B
+    input wire [wordSize-1:0] A, B,
     //5-bit opcode
     input wire [4:0] opcode,
     //64-bit output register C
@@ -15,12 +15,12 @@ module alu_test #(parameter wordSize = 32)(
    wire [wordSize-1:0] temp, temp32_out, add32_out, sub32_out;
 	wire [(wordSize*2)-1:0] temp64_out, mul64_out, div64_out;
 	 
-	alu_32add myAdd (.a(Y), .b(B), .cin(1'd0), .s(add32_out), .cout(temp));
+	alu_32add myAdd (.a(A), .b(B), .cin(1'd0), .s(add32_out), .cout(temp));
 	
 	reg [wordSize-1:0] neg_b;
-	alu_32add mySub (.a(Y), .b(neg_b), .cin(1'd0), .s(sub32_out), .cout(temp));
+	alu_32add mySub (.a(A), .b(neg_b), .cin(1'd0), .s(sub32_out), .cout(temp));
 	
-	alu_32div myDiv (.dividend(Y), .divisor(B), .out(div64_out));
+	alu_32div myDiv (.dividend(A), .divisor(B), .out(div64_out));
 	alu_32mul myMul (.multiplicand(A), .multiplier(B), .product(mul64_out));
 	
     always @(posedge clk) begin
@@ -43,47 +43,47 @@ module alu_test #(parameter wordSize = 32)(
                 C [63:0] <= div64_out[63:0];
             end
             shr: begin
-                C [31:0] <= Y >> B;
+                C [31:0] <= A >> B;
                 C [63:32] <= 32'd0;
             end
             shl: begin
-                C [31:0] <= Y << B;
+                C [31:0] <= A << B;
                 C [63:32] <= 32'd0;
             end
             shra: begin
-                C [31:0] <= Y >>> B;
+                C [31:0] <= A >>> B;
                 C [63:32] <= 32'd0;
             end
             ror: begin
-                C [31:0] <= (Y >> B) | (Y << ~B);
+                C [31:0] <= (A >> B) | (A << ~B);
                 C [63:32] <= 32'd0;
             end
             rol: begin
-                C [31:0] <= (Y << B) | (Y >> ~B);
+                C [31:0] <= (A << B) | (A >> ~B);
                 C [63:32] <= 32'd0;
             end
             log_and: begin
-                C [31:0] <= Y & B;
+                C [31:0] <= A & B;
                 C [63:32] <= 32'd0;
             end
             log_or: begin
-                C [31:0] <= Y | B;
+                C [31:0] <= A | B;
                 C [63:32] <= 32'd0;
             end
             log_neg: begin
-                C [31:0] <= ~Y;
+                C [31:0] <= ~A;
                 C [63:32] <= 32'd0;
             end
             log_xor: begin
-                C [31:0] <= Y ^ B;
+                C [31:0] <= A ^ B;
                 C [63:32] <= 32'd0;
             end
             log_nor: begin
-                C [31:0] <= ~(Y | B);
+                C [31:0] <= ~(A | B);
                 C [63:32] <= 32'd0;
             end
             log_not: begin
-                C [31:0] <= !Y;
+                C [31:0] <= !A;
                 C [63:32] <= 32'd0;
             end
             default: begin

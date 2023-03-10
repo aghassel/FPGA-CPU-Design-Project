@@ -6,15 +6,15 @@ module tb_alu;
     
     reg clk = 0;
     reg clr = 0;
-    reg [wordSize-1:0] A = 16;
-    reg [wordSize-1:0] B = 1;
+    reg [wordSize-1:0] A = -16;
+    reg [wordSize-1:0] B = 2;
     reg [4:0] opcode;
     wire [(wordSize*2)-1:0] C;
     
     alu_test #(.wordSize(wordSize)) dut (
         .clk(clk),
         .clr(clr),
-        .Y(A),
+        .A(A),
         .B(B),
         .opcode(opcode),
         .C(C)

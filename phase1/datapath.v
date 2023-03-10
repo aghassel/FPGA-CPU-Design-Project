@@ -121,9 +121,8 @@ bus myBus (
 alu_test myAlu(
 	.clk(clk),
 	.clr(clr), 
-	.A(BusMuxOut), //A is passed the contents from the bus
+	.A(Yout), //A is passed the contents from the bus
 	.B(BusMuxOut),
-    .Y(Yout),
 	.opcode(opcode),
 	.C(CRegOut)
 	);
