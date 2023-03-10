@@ -5,10 +5,12 @@ module reg32bit(clr, clk, enable, D, Q);
 
 	
 	always @(posedge clk) begin
-		if (clr)
-			Q <= 0;
-		else if (enable)
-			Q <= D;
+		if (clr) begin
+			Q[31:0]  <= 32'b0;
+		end
+		else if (enable) begin
+			Q[31:0] <= D[31:0];
+		end
 	end
 endmodule
 	

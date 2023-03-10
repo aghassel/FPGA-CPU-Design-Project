@@ -4,7 +4,7 @@ input R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, 
 input HIin, LOin, Zin, incPC, MARin, MDRin, Read, InPortin, Cin, Yin,
 
 input R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out,
-input HIout, LOout, ZLowOut, ZHighOut, MARout, MDRout, Cout, Yout, InPortOut,
+input HIout, LOout, ZLowOut, ZHighOut, MDRout, Cout, InPortOut, PCin, PCout,
 
 input [4:0] opcode,
 input [31:0] Mdatain
@@ -35,12 +35,10 @@ wire [31:0] BusMuxIn_HI,
             BusMuxIn_MDR, 
             BusMuxIn_InPort,
             Yout,
-
+            MARout,
             BusMuxOut;
 
-wire [63:0] CRegOut;
-wire [4:0]  encoderSignal;  
-
+wire [63:0] CRegOut; 
 
 reg32bit R0 (clr, clk, R0in, BusMuxOut, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
 reg32bit R1 (clr, clk, R1in, BusMuxOut, BusMuxIn_R1);
@@ -63,8 +61,9 @@ reg32bit HI (clr, clk, HIin, BusMuxOut, BusMuxIn_HI);
 reg32bit LO (clr, clk, LOin, BusMuxOut, BusMuxIn_LO);
 reg32bit ZHigh (clr, clk, Zin, CRegOut[63:32], BusMuxIn_Zhigh);
 reg32bit ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
-reg32bit PC (clr, clk, incPC, BusMuxOut, BusMuxIn_PC);  
-MD_reg32 MDR (clr, clk, Read, MDRin, BusMuxOut, Mdatain, BusMuxIn_MDR); //special MDR reg
+reg32bit PC (clr, clk, PCin, BusMuxOut, BusMuxIn_PC); 
+ 
+MD_reg32 MDR (.clr(clr), .clk(clk), .read(Read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .Mdatain(Mdatain), .Q(BusMuxIn_MDR)); //special MDR reg
 
 reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      //do we use this?
 reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);           //or this?
@@ -72,31 +71,30 @@ reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);           //or this?
 //bus
 bus myBus (
     //encoder
-    .R0out(R0in),
-    .R1out(R1in),
-    .R2out(R2in),
-    .R3out(R3in),
-    .R4out(R4in),
-    .R5out(R5in),
-    .R6out(R6in),
-    .R7out(R7in),
-    .R8out(R8in),
-    .R9out(R9in),
-    .R10out(R10in),
-    .R11out(R11in),
-    .R12out(R12in),
-    .R13out(R13in),
-    .R14out(R14in),
-    .R15out(R15in),
-    .HIout(HIin),
-    .LOout(LOin),
-    .Zhighout(ZHighIn),
-    .Zlowout(ZLowIn),
-    .PCout(incPC),
-    .MDRout(MDRin),
-    .InPortout(InPortin),
-    .Cout(Cin),
-    .eout(encoderSignal),
+    .R0out(R0out),
+    .R1out(R1out),
+    .R2out(R2out),
+    .R3out(R3out),
+    .R4out(R4out),
+    .R5out(R5out),
+    .R6out(R6out),
+    .R7out(R7out),
+    .R8out(R8out),
+    .R9out(R9out),
+    .R10out(R10out),
+    .R11out(R11out),
+    .R12out(R12out),
+    .R13out(R13out),
+    .R14out(R14out),
+    .R15out(R15out),
+    .HIout(HIout),
+    .LOout(LOout),
+    .ZHighOut(ZHighOut),
+    .ZLowOut(ZLowOut),
+    .PCout(PCout),
+    .MDRout(MDRout),
+    .InPortout(InPortout),
+    .Cout(Cout),
     //multiplexer
     .BusMuxIn_R0(BusMuxIn_R0),
     .BusMuxIn_R1(BusMuxIn_R1),

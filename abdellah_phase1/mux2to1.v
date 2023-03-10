@@ -5,9 +5,9 @@ module mux2to1(data_1, data_2, out, select);
 	
 	always@(*)begin
 		if (select)
-			out <= data_1;
-		else
 			out <= data_2;
+		else
+			out <= data_1;
 	end
 endmodule
 	

@@ -1,4 +1,4 @@
-module encoder_32_to_5 (input wire [31:0]ein, output reg [4:0] eout);
+module encoder32to5 (input wire [31:0]ein, output reg [4:0] eout);
 	always @(ein) begin
 		if(ein[31]==1) eout=5'b11111;
 		else if (ein[30]==1) eout=5'b11110;
