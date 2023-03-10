@@ -81,7 +81,7 @@ module datapath_tb;
 
     initial begin
         clk = 0;
-        forever #20 clk = ~clk;
+        forever #5 clk = ~clk;
     end
 
     always @(posedge clk) begin
@@ -226,10 +226,10 @@ module datapath_tb;
                 Yin <= 0;
             end
             T4: begin
-                #10
+                #5
                 R3out <= 1;
                 opcode <= 5'b00100;
-                #50
+                #5
                 Zin <= 1;
                 #15
                 R3out <=0;
@@ -239,7 +239,7 @@ module datapath_tb;
                 #10
                 ZLowOut <= 1;
                 LOin <= 1;
-                #50
+                #15
                 ZLowOut <= 0;
                 LOin <= 0;
             end

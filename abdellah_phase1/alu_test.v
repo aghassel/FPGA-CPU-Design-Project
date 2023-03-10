@@ -24,7 +24,7 @@ module alu_test #(parameter wordSize = 32)(
 	alu_32div myDiv (.dividend(A), .divisor(B), .out(div64_out));
 	alu_32mul myMul (.multiplicand(A), .multiplier(B), .product(mul64_out));
 	
-    always @(posedge clk) begin
+    always @(*) begin
 	
         case(opcode)
             add: begin
