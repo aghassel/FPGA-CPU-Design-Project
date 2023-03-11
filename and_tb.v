@@ -149,7 +149,7 @@ module and_tb;
             end
 
             Reg_load1a: begin
-                Mdatain <= 2;
+                Mdatain <= 111;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;            
             end
@@ -160,7 +160,7 @@ module and_tb;
             end
 
             Reg_load2a: begin
-                Mdatain <= 2;
+                Mdatain <= 35;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;            
             end

@@ -167,8 +167,8 @@ module datapath_tb;
             end
 
             Reg_load2b: begin
-                #10 MDRout <= 1; R2in <= 1;
-                #15 MDRout <= 0; R2in <= 0;
+                #10 MDRout <= 1; R6in <= 1;
+                #15 MDRout <= 0; R6in <= 0;
             end
             Reg_load3a: begin
                 Mdatain <= -2;
@@ -178,8 +178,8 @@ module datapath_tb;
             end
 
             Reg_load3b: begin
-                #10 MDRout <= 1; R3in <= 1;
-                #15 MDRout <= 0; R3in <= 0;
+                #10 MDRout <= 1; R7in <= 1;
+                #15 MDRout <= 0; R7in <= 0;
             end
 
             T0: begin
@@ -219,18 +219,18 @@ module datapath_tb;
             end
             T3: begin 
                 #10
-                R2out <= 1;
+                R6out <= 1;
                 Yin <= 1;
                 #15
-                R2out <= 0;
+                R6out <= 0;
                 Yin <= 0;
             end
             T4: begin
                 #5
-                R3out <= 1;
+                R7out <= 1;
 					 opcode <= 5'b00100;
 					 #5
-					 R3out <= 0;
+					 R7out <= 0;
 					 #5
 					 Zin <= 1;
 					 #5

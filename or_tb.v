@@ -149,7 +149,7 @@ module or_tb;
             end
 
             Reg_load1a: begin
-                Mdatain <= 2;
+                Mdatain <= 4;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;            
             end
