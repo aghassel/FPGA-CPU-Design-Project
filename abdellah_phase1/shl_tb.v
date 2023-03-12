@@ -3,7 +3,7 @@
 // shr R1, R3, R5, 
 // R3 holds -32, R3 holds 2
 
-module ror_tb;
+module rol_tb;
     reg clk = 0;
     reg clr = 0;
     reg R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in;
@@ -199,7 +199,7 @@ module ror_tb;
                 PCin <= 1;
                 Read <= 1;
                 MDRin <= 1;
-                Mdatain <= 5'b01000; //ror opcode
+                Mdatain <= 5'b01001; //ror opcode
                 
                 #15
                 ZLowOut <= 0;
@@ -227,7 +227,7 @@ module ror_tb;
 				T4: begin
                 #5
                 R4out <= 1;
-					 opcode <= 5'b00111;
+					 opcode <= 5'b00110;
 					 #5
 					 R4out <= 0;
 					 #5

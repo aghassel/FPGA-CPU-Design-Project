@@ -71,7 +71,7 @@ module alu_test #(parameter wordSize = 32)(
                 C [63:32] <= 32'd0;
             end
             log_neg: begin
-                C [31:0] <= ~A;
+                C [31:0] <= -A;
                 C [63:32] <= 32'd0;
             end
             log_xor: begin
@@ -83,7 +83,7 @@ module alu_test #(parameter wordSize = 32)(
                 C [63:32] <= 32'd0;
             end
             log_not: begin
-                C [31:0] <= !A;
+                C [31:0] <= ~A;
                 C [63:32] <= 32'd0;
             end
             default: begin

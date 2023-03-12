@@ -3,7 +3,7 @@
 // shr R1, R3, R5, 
 // R3 holds -32, R3 holds 2
 
-module ror_tb;
+module shl_tb;
     reg clk = 0;
     reg clr = 0;
     reg R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in;
@@ -81,7 +81,7 @@ module ror_tb;
 
     initial begin
         clk = 0;
-        forever #2 clk = ~clk;
+        forever #5 clk = ~clk;
     end
 
     always @(posedge clk) begin
@@ -149,14 +149,14 @@ module ror_tb;
             end
 
             Reg_load1a: begin
-                Mdatain <= 128;
+                Mdatain <= 0;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;            
             end
 
             Reg_load1b: begin
-                #10 MDRout <= 1; R6in <= 1;
-                #15 MDRout <= 0; R6in <= 0;
+                #10 MDRout <= 1; R1in <= 1;
+                #15 MDRout <= 0; R1in <= 0;
             end
 
             Reg_load2a: begin
@@ -166,8 +166,8 @@ module ror_tb;
             end
 
             Reg_load2b: begin
-                #10 MDRout <= 1; R6in <= 1;
-                #15 MDRout <= 0; R6in <= 0;
+                #10 MDRout <= 1; R3in <= 1;
+                #15 MDRout <= 0; R3in <= 0;
             end
             Reg_load3a: begin
                 Mdatain <= 2;
@@ -177,8 +177,8 @@ module ror_tb;
             end
 
             Reg_load3b: begin
-                #10 MDRout <= 1; R4in <= 1;
-                #15 MDRout <= 0; R4in <= 0;
+                #10 MDRout <= 1; R5in <= 1;
+                #15 MDRout <= 0; R5in <= 0;
             end
 
             T0: begin
@@ -199,7 +199,7 @@ module ror_tb;
                 PCin <= 1;
                 Read <= 1;
                 MDRin <= 1;
-                Mdatain <= 5'b01000; //ror opcode
+                Mdatain <= 5'b00110; //SHRA opcode
                 
                 #15
                 ZLowOut <= 0;
@@ -218,18 +218,18 @@ module ror_tb;
             end
             T3: begin 
                 #10
-                R6out <= 1;
+                R3out <= 1;
                 Yin <= 1;
                 #15
-                R6out <= 0;
+                R3out <= 0;
                 Yin <= 0;
-            end            
-				T4: begin
+            end
+            T4: begin
                 #5
-                R4out <= 1;
-					 opcode <= 5'b00111;
+                R5out <= 1;
+					 opcode <= 5'b00110;
 					 #5
-					 R4out <= 0;
+					 R5out <= 0;
 					 #5
 					 Zin <= 1;
 					 #5
@@ -237,11 +237,11 @@ module ror_tb;
             end
             T5: begin
                 #10
-                R6in <= 1;
+                R1in <= 1;
                 ZLowOut <= 1;
                 #15
                 ZLowOut <= 0;
-                R6in <= 0;
+                R1in <= 0;
             end
 
             

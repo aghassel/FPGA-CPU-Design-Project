@@ -155,19 +155,19 @@ module shr_tb;
             end
 
             Reg_load1b: begin
-                #10 MDRout <= 1; R1in <= 1;
-                #15 MDRout <= 0; R1in <= 0;
+                #10 MDRout <= 1; R6in <= 1;
+                #15 MDRout <= 0; R6in <= 0;
             end
 
             Reg_load2a: begin
-                Mdatain <= -32;
+                Mdatain <= 32;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;            
             end
 
             Reg_load2b: begin
-                #10 MDRout <= 1; R3in <= 1;
-                #15 MDRout <= 0; R3in <= 0;
+                #10 MDRout <= 1; R6in <= 1;
+                #15 MDRout <= 0; R6in <= 0;
             end
             Reg_load3a: begin
                 Mdatain <= 2;
@@ -177,8 +177,8 @@ module shr_tb;
             end
 
             Reg_load3b: begin
-                #10 MDRout <= 1; R5in <= 1;
-                #15 MDRout <= 0; R5in <= 0;
+                #10 MDRout <= 1; R4in <= 1;
+                #15 MDRout <= 0; R4in <= 0;
             end
 
             T0: begin
@@ -218,18 +218,18 @@ module shr_tb;
             end
             T3: begin 
                 #10
-                R3out <= 1;
+                R6out <= 1;
                 Yin <= 1;
                 #15
-                R3out <= 0;
+                R6out <= 0;
                 Yin <= 0;
             end
             T4: begin
                 #5
-                R5out <= 1;
+                R4out <= 1;
 					 opcode <= 5'b00111;
 					 #5
-					 R5out <= 0;
+					 R4out <= 0;
 					 #5
 					 Zin <= 1;
 					 #5
@@ -237,11 +237,11 @@ module shr_tb;
             end
             T5: begin
                 #10
-                R1in <= 1;
+                R6in <= 1;
                 ZLowOut <= 1;
                 #15
                 ZLowOut <= 0;
-                R1in <= 0;
+                R6in <= 0;
             end
 
             
