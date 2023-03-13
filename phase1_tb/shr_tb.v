@@ -3,7 +3,7 @@
 // shr R1, R3, R5, 
 // R3 holds -32, R3 holds 2
 
-module rol_tb;
+module shr_tb;
     reg clk = 0;
     reg clr = 0;
     reg R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in;
@@ -81,7 +81,7 @@ module rol_tb;
 
     initial begin
         clk = 0;
-        forever #2 clk = ~clk;
+        forever #5 clk = ~clk;
     end
 
     always @(posedge clk) begin
@@ -149,7 +149,7 @@ module rol_tb;
             end
 
             Reg_load1a: begin
-                Mdatain <= 128;
+                Mdatain <= 0;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;            
             end
@@ -199,7 +199,7 @@ module rol_tb;
                 PCin <= 1;
                 Read <= 1;
                 MDRin <= 1;
-                Mdatain <= 5'b01001; //ror opcode
+                Mdatain <= 5'b00101; //SHRA opcode
                 
                 #15
                 ZLowOut <= 0;
@@ -223,11 +223,11 @@ module rol_tb;
                 #15
                 R6out <= 0;
                 Yin <= 0;
-            end            
-				T4: begin
+            end
+            T4: begin
                 #5
                 R4out <= 1;
-					 opcode <= 5'b00110;
+					 opcode <= 5'b00111;
 					 #5
 					 R4out <= 0;
 					 #5
