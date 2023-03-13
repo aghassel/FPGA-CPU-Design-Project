@@ -1,5 +1,6 @@
 module datapath (
 input clr, clk,
+input BAout,
 input R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in, 
 input HIin, LOin, Zin, incPC, MARin, MDRin, Read, InPortin, Cin, Yin,
 
@@ -40,7 +41,8 @@ wire [31:0] BusMuxIn_HI,
 
 wire [63:0] CRegOut; 
 
-reg32bit R0 (clr, clk, R0in, BusMuxOut, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
+
+regR0 R0 (BAout, clr, clk, R0in, R0wire, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
 reg32bit R1 (clr, clk, R1in, BusMuxOut, BusMuxIn_R1);
 reg32bit R2 (clr, clk, R2in, BusMuxOut, BusMuxIn_R2);    
 reg32bit R3 (clr, clk, R3in, BusMuxOut, BusMuxIn_R3);  
@@ -67,6 +69,8 @@ MD_reg32 MDR (.clr(clr), .clk(clk), .read(Read), .MDRin(MDRin), .BusMuxOut(BusMu
 
 reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      //do we use this?
 reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);           //or this?
+
+
 
 //bus
 bus myBus (
