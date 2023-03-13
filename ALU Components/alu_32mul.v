@@ -1,3 +1,4 @@
+//Booths algorithm multiplication.
 module alu_32mul (
     input signed [31:0] multiplicand, 
     input signed [31:0] multiplier,
