@@ -1,4 +1,4 @@
-module reg32bit(clr, clk, enable, D, Q, BAout);
+module reg32bit(BAout, clr, clk, enable, D, Q);
 	input wire clr, clk, enable;
 	input wire [31:0]D;
 	output reg [31:0]Q;
