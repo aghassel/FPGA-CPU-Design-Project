@@ -6,7 +6,8 @@ module select_and_encode (
     output R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, 
     R14out, R15out;
 );
-    wire [3:0] Ra, Rb, Rc, gra_and, grb_and, grc_and, dec_in, Rout_or;
+    wire Rout_or;
+    wire [3:0] Ra, Rb, Rc, gra_and, grb_and, grc_and, dec_in;
     wire [15:0] dec_out;
 
     //Decoder initialization
@@ -21,12 +22,12 @@ module select_and_encode (
     assign gra_and = Gra == 1 ? 4'b1111 : 4'b0000;
     assign grb_and = Grb == 1 ? 4'b1111 : 4'b0000;
     assign grc_and = Grc == 1 ? 4'b1111 : 4'b0000;
-
-    //Or Rout and BAout, then covert to 16 bit for and'ing
-    assign Rout_or = Rout | BAout;
   
     //And Ra, Rb, Rc and w Gr input, then or values and input to decoder
     assign dec_in = (gra_and & Ra) | (grb_and & Rb) | (grc_and & Rc);
+
+    //Or Rout and BAout, then covert to 16 bit for and'ing
+    assign Rout_or = Rout | BAout;
 
     //Select wich output signal to send.
     assign R0in = dec_out[0] & Rin;
