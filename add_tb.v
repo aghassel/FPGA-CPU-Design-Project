@@ -3,7 +3,7 @@
 // div LO/HI , R2, R3, (remainder is )
 // R2 holds 16, R3 holds -2
 
-module div_tb;
+module add_tb;
     reg clk = 0;
     reg clr = 0;
     reg R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in;
@@ -71,7 +71,7 @@ module div_tb;
         .R15out(R15out),
         .HIout(HIout),
         .LOout(LOout),
-        .ZHighOut(ZHighout),
+        .ZHighOut(ZHighOut),
         .ZLowOut(ZLowOut),
         .PCout(PCout),
         .MDRout(MDRout),
@@ -98,7 +98,6 @@ module div_tb;
             T2          : #40 cur_state = T3; 
             T3          : #40 cur_state = T4; 
             T4          : #40 cur_state = T5; 
-            T5          : #40 cur_state = T6;
         endcase    
     end
 
@@ -150,36 +149,36 @@ module div_tb;
             end
 
             Reg_load1a: begin
-                Mdatain <= 0;
-                #10 Read <= 1; MDRin <= 1;
-                #15 Read <= 0; MDRin <= 0;            
-            end
-
-            Reg_load1b: begin
-                #10 MDRout <= 1; R1in <= 1;
-                #15 MDRout <= 0; R1in <= 0;
-            end
-
-            Reg_load2a: begin
                 Mdatain <= 16;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;            
             end
 
+            Reg_load1b: begin
+                #10 MDRout <= 1; R4in <= 1;
+                #15 MDRout <= 0; R4in <= 0;
+            end
+
+            Reg_load2a: begin
+                Mdatain <= 32;
+                #10 Read <= 1; MDRin <= 1;
+                #15 Read <= 0; MDRin <= 0;            
+            end
+
             Reg_load2b: begin
-                #10 MDRout <= 1; R2in <= 1;
-                #15 MDRout <= 0; R2in <= 0;
+                #10 MDRout <= 1; R5in <= 1;
+                #15 MDRout <= 0; R5in <= 0;
             end
             Reg_load3a: begin
-                Mdatain <= -2;
+                Mdatain <= 18;
                 Read = 0; MDRin = 0;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;            
             end
 
             Reg_load3b: begin
-                #10 MDRout <= 1; R3in <= 1;
-                #15 MDRout <= 0; R3in <= 0;
+                #10 MDRout <= 1; R0in <= 1;
+                #15 MDRout <= 0; R0in <= 0;
             end
 
             T0: begin
@@ -200,7 +199,7 @@ module div_tb;
                 PCin <= 1;
                 Read <= 1;
                 MDRin <= 1;
-                Mdatain <= 4; //Same as opcode
+                Mdatain <= 1; //Same as opcode for AND
                 
                 #15
                 ZLowOut <= 0;
@@ -219,37 +218,30 @@ module div_tb;
             end
             T3: begin 
                 #10
-                R2out <= 1;
+                R4out <= 1;
                 Yin <= 1;
                 #15
-                R2out <= 0;
+                R4out <= 0;
                 Yin <= 0;
             end
             T4: begin
                 #5
-                R3out <= 1;
-                opcode <= 5'b00100;
-                #5
-                Zin <= 1;
-                #15
-                R3out <=0;
+                R5out <= 1;
+					 opcode <= 5'b00001;
+					 #5
+					 R5out <= 0;
+					 #5
+					 Zin <= 1;
+					 #5
                 Zin <= 0;
             end
             T5: begin
                 #10
                 ZLowOut <= 1;
-                LOin <= 1;
+                R0in <= 1;
                 #15
                 ZLowOut <= 0;
-                LOin <= 0;
-            end
-            T6: begin 
-                #10 
-                ZHighOut <= 1;
-                HIin <= 1;
-                #15
-                ZHighOut <= 0;
-                HIin <= 0;
+                R0in <= 0;
             end
         endcase
     end

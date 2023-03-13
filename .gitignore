@@ -1,10 +1,27 @@
 # Don't track content of these folders
 phase1/db/
 phase1/output_files
-phase1/incremental_db/
-phase1/simulation/
+
+incremental_db/
+output_files/
+simulation/
+db/
 
 *.bak
 *.qpf
 *.qsf
 *.qws
+*.kpt
+*.json
+*.rpt
+*.logdb
+*.tdf
+*.flock
+*.hdb
+*.cdb
+*.qmsg
+*.idb
+*.xml
+*.txt
+*.bpm
+*.vhd

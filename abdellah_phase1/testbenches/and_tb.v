@@ -148,97 +148,66 @@ module and_tb;
                 InPortin <= 0;
                 Cout <= 0;             
             end
-
-					Reg_load1a : begin
-                                Mdatain <= 32'h000000A;
-                                Read = 0; MDRin = 0;
-                                #10 Read <= 1; MDRin <= 1;
-                                #15 Read <= 0; MDRin <= 0;
-                                end
-									
-						Reg_load1b: begin
-                                #10 MDRout <= 1; R2in <= 1;
-                                #15 MDRout <= 0; R2in <= 0; //initialize R2 with value of 10
-                                end
-									
-						Reg_load2a: begin
-                                Mdatain<=32'h00000014;
-                                #10 Read <= 1; MDRin <= 1;
-                                #15 Read <= 0; MDRin <= 0;
-								end
-						
-						Reg_load2b: begin
-                                #10 MDRout <= 1; R3in <= 1; 
-                                #15 MDRout <= 0; R3in <= 0; //initialize R3 with value of 2
-						        end
-						
-						Reg_load3a: begin
-                                Mdatain<=32'h00000018;
-                                #10 Read <= 1; MDRin <= 1;
-                                #15 Read <= 0; MDRin <= 0;
-						        end
-						
-						Reg_load3b: begin
-                                #10 MDRout <= 1; R1in <= 1;
-                                #15 MDRout <= 0; R1in <= 0; //initialize r1 with value of 18
-						end
-						
-						T0: begin //see if you need to de assert signals
-						
-						//R2out<=1; Yin<=1;
-						//#1 Yin <= 0; R2out <=0; //Load R2 into Yin;
-						
-						//PCout<=1; MARin<=1; IncPC<=1; Zin<=1; ZLOin<=1; 
-						
-						
-						end
-						
-						
-						T1: begin
-						
-						//Read<=1; PCin<=1; MDRin<=1; testMdatain<=32'h28918000; 
-						
-
-
-						
-						end
-						
-						
-						
-						T2: begin
-					
-						
-					//MDRout<=1; IRin<=1; 
-						
-						 
-						
-						end
-						
-						T3: begin
-
-						R2out<=1; Yin<=1;
-						
-						end
-						
-						T4: begin
-						 
-						//R2out <=0; 
-						Yin <= 0; R2out <=0; 
-						opcode = 5'b00101; Zin <=1; R3out<=1; 
-
-
-						end
-						
-						T5: begin
-						
-						Zin<=0; 
-						R3out<=0;
-						ZLowSelect<=0;
-						
-						ZLOout<=1; R1in<=1; 
-
-						end					
-					endcase
-				end
-
+            
+		Reg_load1a: begin 
+				Mdatain<= 32'h00000022;
+				Read = 0; MDRin = 0;	
+				#10 Read <= 1; MDRin <= 1;  
+				#15 Read <= 0; MDRin <= 0;
+		end
+		Reg_load1b: begin
+				#10 MDRout<= 1; R2in <= 1;  
+				#15 MDRout<= 0; R2in <= 0;     
+		end
+		Reg_load2a: begin 
+				Mdatain <= 32'h00000024;
+				#10 Read <= 1; MDRin <= 1;  
+				#15 Read <= 0; MDRin <= 0;
+		end
+		Reg_load2b: begin
+				#10 MDRout<= 1; R4in <= 1;  
+				#15 MDRout<= 0; R4in <= 0;
+		end
+		Reg_load3a: begin 
+				Mdatain <= 32'h00000026;
+				#10 Read <= 1; MDRin <= 1;  
+				#15 Read <= 0; MDRin <= 0;
+		end
+		Reg_load3b: begin
+				#10 MDRout<= 1; R5in <= 1;  
+				#15 MDRout<= 0; R5in <= 0;
+		end
+	
+		T0: begin
+				Mdatain <= 32'h00000007; 
+				PCin <= 1; MDRout <=1;
+				
+				#10 PCout<= 1; MARin <= 1; IncPC <= 1; //ZLowIn <= 1;
+				#10 PCin <= 0; MDRout <=0; PCout<= 0; MARin <= 0; IncPC <= 0;
+		end
+		T1: begin
+				Mdatain <= 32'h4A920000;   
+				Read <= 1; MDRin <= 1;
+				#10 Read <= 0; MDRin <= 0;
+				//Zlowout<= 1; PCin <= 1; 
+				
+		end
+		T2: begin
+				MDRout<= 1; IRin <= 1; 
+				#10 MDRout<= 0; IRin <= 0; 
+		end
+		T3: begin
+				#10 R2out<= 1; Yin <= 1;  
+				#15 R2out<= 0; Yin <= 0;
+		end
+		T4: begin
+				R4out<= 1; AND <= 5'b01001; ZLowIn <= 1; 
+				#25 R4out<= 0; ZLowIn <= 0; 
+		end
+		T5: begin
+				Zlowout<= 1; R5in <= 1; 
+				#25 Zlowout<= 0; R5in <= 0;
+		end
+	endcase
+end
 endmodule
