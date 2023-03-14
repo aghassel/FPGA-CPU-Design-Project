@@ -3,7 +3,7 @@ module ram(
     input read, write,
     input [8:0] MARout,
     input [31:0] MDRout;
-    output reg [31:0] MDRin;
+    output reg [31:0] BusMuxIn_MDR;
 );
     reg [31:0] mem [512];
 
