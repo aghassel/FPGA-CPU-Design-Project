@@ -11,12 +11,8 @@ module reg32bit(BAout, clr, clk, enable, D, Q);
 		else if (enable) //If enable is high, read value from bus to Q
             regout <= D;
 	end
-    always @(*) begin
-        if (~BAout)
-            Q <= 0;
-		else
-			Q <= regout;
-    end
+    
+	assign Q = BAout ? 32'b0 : regout;
 
 endmodule
 	
