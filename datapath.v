@@ -1,5 +1,5 @@
 module datapath (
-input clr, clk,
+input clr, clk, read, write,
 input BAout, Rin, Rout, Gra, Grb, Grc,
 input HIin, LOin, Zin, incPC, MARin, MDRin, Read, InPortin, Cin, Yin, IRin,
 input HIout, LOout, ZLowOut, ZHighOut, MDRout, Cout, InPortOut, PCin, PCout, 
@@ -72,6 +72,8 @@ reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      //do we use this?
 reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);           //or this?
 
 reg32bit IR (clr, clk, IRin, BusMuxOut, IRout);
+
+ram myRam (.read(read), .write(write), .MARout(MARout[8:0]), .Mdatain(Mdatain), .BusMuxIn_MDR(BusMuxIn_MDR));
 
 select_and_encode mySAE (
     .irOut(IRout),
