@@ -39,7 +39,7 @@ wire [31:0] BusMuxIn_HI,
             MARout,
             BusMuxOut,
             C_sign_extended,
-            IRout;
+            IRdata;
 
 wire [63:0] CRegOut; 
 
@@ -71,12 +71,14 @@ MD_reg32 MDR (.clr(clr), .clk(clk), .read(Read), .MDRin(MDRin), .BusMuxOut(BusMu
 reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      //do we use this?
 reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);           //or this?
 
-reg32bit IR (clr, clk, IRin, BusMuxOut, IRout);
+//Instruction register. IRdata doesn't go on the bus, but leads to CON
+reg32bit IR (clr, clk, IRin, BusMuxOut, IRdata);
 
+//Memory initialization
 ram myRam (.read(read), .write(write), .MARout(MARout[8:0]), .Mdatain(Mdatain), .BusMuxIn_MDR(BusMuxIn_MDR));
 
 select_and_encode mySAE (
-    .irOut(IRout),
+    .irOut(IRdata),
     .Gra(Gra),
     .Grb(Grb),
     .Grc(Grc),
