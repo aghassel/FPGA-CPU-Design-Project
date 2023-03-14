@@ -1,15 +1,16 @@
 module datapath (
 input clr, clk, read, write,
-input BAout, Rin, Rout, Gra, Grb, Grc,
-input HIin, LOin, Zin, incPC, MARin, MDRin, Read, InPortin, Cin, Yin, IRin,
+input BAout, Rin, Rout, Gra, Grb, Grc, CONN_in, //Added in phase2 for select logic and CONN_FF
+input HIin, LOin, Zin, incPC, MARin, MDRin, InPortIn, OutPortIn Cin, Yin, IRin,
 input HIout, LOout, ZLowOut, ZHighOut, MDRout, Cout, InPortOut, PCin, PCout, 
 
 input [4:0] opcode,
-input [31:0] Mdatain
+input [31:0] InData;
 );
 
 wire R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out;
 wire R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in;
+wire Control_unit_in;
 
 wire [31:0] BusMuxIn_R0, 
             BusMuxIn_R1, 
@@ -38,8 +39,9 @@ wire [31:0] BusMuxIn_HI,
             Yout,
             MARout,
             BusMuxOut,
-            C_sign_extended,
-            IRdata;
+            C_sign_extended, //Csign extended for branching
+            IRdata, //Output of IR reg
+            OutPortOut; //Wire for outport. Goes no where
 
 wire [63:0] CRegOut; 
 
@@ -66,7 +68,12 @@ reg32bit ZHigh (clr, clk, Zin, CRegOut[63:32], BusMuxIn_Zhigh);
 reg32bit ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
 reg32bit PC (clr, clk, PCin, BusMuxOut, BusMuxIn_PC); 
  
-MD_reg32 MDR (.clr(clr), .clk(clk), .read(Read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .Mdatain(Mdatain), .Q(BusMuxIn_MDR)); //special MDR reg
+//Input and output ports added to datapath (p2)
+reg32bit InPort (clr, clk, InPortIn, InData, BusMuxIn_InPort); 
+reg32bit OutPort (clr, clk, OutPortIn, BusMuxOut, OutPortOut);
+
+//MDR reg initialization
+MD_reg32 MDR (.clr(clr), .clk(clk), .read(read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .Mdatain(Mdatain), .Q(BusMuxIn_MDR)); //special MDR reg
 
 reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      //do we use this?
 reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);           //or this?
@@ -77,6 +84,15 @@ reg32bit IR (clr, clk, IRin, BusMuxOut, IRdata);
 //Memory initialization
 ram myRam (.read(read), .write(write), .MARout(MARout[8:0]), .Mdatain(Mdatain), .BusMuxIn_MDR(BusMuxIn_MDR));
 
+//Control Branch logic
+CONN_FF myConn_ff (
+    .IRin(IRdata[20:19]),
+    .BusMuxOut(BusMuxOut),
+    .CONN_in(CONN_in),
+    .CONN_out(Control_unit_in)
+);
+
+//Select and Encode logic for selecting register functions based on opcode
 select_and_encode mySAE (
     .irOut(IRdata),
     .Gra(Gra),
@@ -181,5 +197,4 @@ alu_test myAlu(
 	.opcode(opcode),
 	.C(CRegOut)
 	);
-
 endmodule
