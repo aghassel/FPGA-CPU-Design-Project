@@ -2,10 +2,10 @@ module datapath (
 input clr, clk, read, write,
 input BAout, Rin, Rout, Gra, Grb, Grc, CONN_in, //Added in phase2 for select logic and CONN_FF
 input HIin, LOin, Zin, incPC, MARin, MDRin, InPortIn, OutPortIn Cin, Yin, IRin,
-input HIout, LOout, ZLowOut, ZHighOut, MDRout, Cout, InPortOut, PCin, PCout, 
+input HIout, LOout, ZLowOut, ZHighOut, MDRout, Cout, InPortout, PCin, PCout, 
 
 input [4:0] opcode,
-input [31:0] InData;
+input [31:0] InData
 );
 
 wire R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out;
@@ -130,7 +130,7 @@ select_and_encode mySAE (
     .R12out(R12out), 
     .R13out(R13out), 
     .R14out(R14out),
-    .R15out(R15out);
+    .R15out(R15out),
     .C_sign_extended(C_sign_extended)
 );
 
