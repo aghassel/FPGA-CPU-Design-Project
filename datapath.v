@@ -1,7 +1,7 @@
 module datapath (
 input clr, clk, read, write,
 input BAout, Rin, Rout, Gra, Grb, Grc, CONN_in, //Added in phase2 for select logic and CONN_FF
-input HIin, LOin, Zin, incPC, MARin, MDRin, InPortIn, OutPortIn Cin, Yin, IRin,
+input HIin, LOin, Zin, incPC, MARin, MDRin, InPortIn, OutPortIn, Cin, Yin, IRin,
 input HIout, LOout, ZLowOut, ZHighOut, MDRout, Cout, InPortout, PCin, PCout, 
 
 input [4:0] opcode,
@@ -82,7 +82,7 @@ reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);           //or this?
 reg32bit IR (clr, clk, IRin, BusMuxOut, IRdata);
 
 //Memory initialization
-ram myRam (.read(read), .write(write), .MARout(MARout[8:0]), .Mdatain(Mdatain), .BusMuxIn_MDR(BusMuxIn_MDR));
+ram myRam (.clk(clk), .read(read), .write(write), .MARout(MARout[8:0]), .D(MDRout), .Q(BusMuxIn_MDR));
 
 //Control Branch logic
 CONN_FF myConn_ff (

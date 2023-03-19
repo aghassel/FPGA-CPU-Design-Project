@@ -4,15 +4,15 @@ module select_and_encode (
     input Rin, Rout, BAout,
     output R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in,
     output R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, 
-    R14out, R15out;
-    output C_sign_extended;
+    R14out, R15out,
+    output C_sign_extended
 );
     wire Rout_or;
     wire [3:0] Ra, Rb, Rc, gra_and, grb_and, grc_and, dec_in;
     wire [15:0] dec_out;
 
     //Decoder initialization
-    4to16decoder myDecoder (.in(dec_in), .out(dec_out));
+    decoder4to16 myDecoder (.in(dec_in), .out(dec_out));
 
     //Partition IR reg output
     assign Ra = irOut[26:23];
