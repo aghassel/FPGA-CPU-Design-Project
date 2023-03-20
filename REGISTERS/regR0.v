@@ -1,9 +1,10 @@
-module reg32bit(BAout, clr, clk, enable, D, Q);
-	input wire clr, clk, enable;
+module regR0(BAout, clr, clk, enable, D, Q);
+	input wire BAout, clr, clk, enable;
 	input wire [31:0]D;
-	output reg [31:0]Q;
+	output wire [31:0]Q;
+	
 	//At positive clock edge begin
-	wire regout;
+	reg [31:0] regout;
 	
 	always @(posedge clk) begin
 		if (clr) //If clr is high set to 0

@@ -12,7 +12,7 @@ wire [4:0] s;
 
 wire [wordSize-1:0] c_sign_extended;
 
-assign c_sign_extended = (Cout == 0) ? 32'd0 : 32'd1;
+assign c_sign_extended = (Cout == 0) ? 32'd0 : 32'hFFFFFFFF;
 
 encoder32to5 myEncoder (
 	.ein({8'b0, Cout, InPortout, MDRout, PCout, ZHighOut, ZLowOut, HIout, LOout, 
