@@ -185,6 +185,7 @@ bus myBus (
     .BusMuxIn_PC(BusMuxIn_PC),
     .BusMuxIn_MDR(BusMuxIn_MDR),
     .BusMuxIn_InPort(BusMuxIn_InPort),
+    .C_sign_extended(C_sign_extended),
     .BusMuxOut(BusMuxOut)
 );
 
