@@ -75,8 +75,8 @@ reg32bit OutPort (clr, clk, OutPortIn, BusMuxOut, OutPortOut);
 //MDR reg initialization
 MD_reg32 MDR (.clr(clr), .clk(clk), .read(read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .Mdatain(Mdatain), .Q(BusMuxIn_MDR)); //special MDR reg
 
-reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      //do we use this?
-reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);           //or this?
+reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      
+reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);          
 
 //Instruction register. IRdata doesn't go on the bus, but leads to CON
 reg32bit IR (clr, clk, IRin, BusMuxOut, IRdata);
