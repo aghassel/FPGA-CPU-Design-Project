@@ -1,3 +1,4 @@
+
 module regPC #(parameter qInitial = 0)(clr, clk, incPC, enable, D, Q);
 	input wire clr, clk, enable incPC;
 	input wire [31:0]D;
@@ -8,6 +9,7 @@ module regPC #(parameter qInitial = 0)(clr, clk, incPC, enable, D, Q);
     always @(posedge incPC) begin
         if (incPC)
             Q <= Q + 1;
+
     end
 
 	//At positive clock edge begin, regular register operations  
