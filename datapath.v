@@ -66,7 +66,9 @@ reg32bit HI (clr, clk, HIin, BusMuxOut, BusMuxIn_HI);
 reg32bit LO (clr, clk, LOin, BusMuxOut, BusMuxIn_LO);
 reg32bit ZHigh (clr, clk, Zin, CRegOut[63:32], BusMuxIn_Zhigh);
 reg32bit ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
-reg32bit PC (clr, clk, PCin, BusMuxOut, BusMuxIn_PC); 
+
+//PC reg initialization, using specific incPC input to increment PC by 1 each time set to high
+regPC PC (clr, clk, incPC, PCin, BusMuxOut, BusMuxIn_PC); 
  
 //Input and output ports added to datapath (p2)
 reg32bit InPort (clr, clk, InPortIn, InData, BusMuxIn_InPort); 
@@ -75,8 +77,8 @@ reg32bit OutPort (clr, clk, OutPortIn, BusMuxOut, OutPortOut);
 //MDR reg initialization
 MD_reg32 MDR (.clr(clr), .clk(clk), .read(read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .Mdatain(Mdatain), .Q(BusMuxIn_MDR)); //special MDR reg
 
-reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      //do we use this?
-reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);           //or this?
+reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      
+reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);           
 
 //Instruction register. IRdata doesn't go on the bus, but leads to CON
 reg32bit IR (clr, clk, IRin, BusMuxOut, IRdata);
