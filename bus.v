@@ -4,15 +4,12 @@ module bus  #(parameter wordSize = 32)(
     input HIout, LOout, ZHighOut, ZLowOut, PCout, MDRout, InPortout, Cout,
     //multiplexer registers
     input [wordSize-1:0] BusMuxIn_R0, BusMuxIn_R1, BusMuxIn_R2, BusMuxIn_R3, BusMuxIn_R4, BusMuxIn_R5, BusMuxIn_R6, BusMuxIn_R7, BusMuxIn_R8, BusMuxIn_R9, BusMuxIn_R10, BusMuxIn_R11, BusMuxIn_R12, BusMuxIn_R13, BusMuxIn_R14, BusMuxIn_R15,
-    input [wordSize-1:0] BusMuxIn_HI, BusMuxIn_LO, BusMuxIn_Zhigh, BusMuxIn_Zlow, BusMuxIn_PC, BusMuxIn_MDR, BusMuxIn_InPort,
+    input [wordSize-1:0] BusMuxIn_HI, BusMuxIn_LO, BusMuxIn_Zhigh, BusMuxIn_Zlow, BusMuxIn_PC, BusMuxIn_MDR, BusMuxIn_InPort, C_sign_extended,
     output [wordSize-1:0] BusMuxOut
 );
 
 wire [4:0] s;
 
-wire [wordSize-1:0] c_sign_extended;
-
-assign c_sign_extended = (Cout == 0) ? 32'd0 : 32'hFFFFFFFF;
 
 encoder32to5 myEncoder (
 	.ein({8'b0, Cout, InPortout, MDRout, PCout, ZHighOut, ZLowOut, HIout, LOout, 
@@ -45,7 +42,7 @@ mux32to1 BusMux(
     .data20(BusMuxIn_PC),
     .data21(BusMuxIn_MDR),
     .data22(BusMuxIn_InPort),
-    .data23(c_sign_extended),
+    .data23(C_sign_extended),
     .data24(0),
     .data25(0),
     .data26(0),
