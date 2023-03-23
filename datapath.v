@@ -1,11 +1,18 @@
 module datapath (
-input clr, clk, read, write,
-input BAout, Rin, Rout, Gra, Grb, Grc, CONN_in, //Added in phase2 for select logic and CONN_FF
-input HIin, LOin, Zin, incPC, MARin, MDRin, InPortIn, OutPortIn, Cin, Yin, IRin,
-input HIout, LOout, ZLowOut, ZHighOut, MDRout, Cout, InPortout, PCin, PCout, 
-
-input [4:0] opcode,
-input [31:0] InData
+    input clr, clk,
+    input read, write,
+    input BAout, Rin, Rout,
+    input Gra, Grb, Grc,
+    input CONN_in,
+    input MARin, MDRin,
+    input HIin, LOin,
+    input Yin, Zin,
+    input PCin, IRin, incPC, 
+    input InPortIn, OutPortIn, 
+    input HIout, LOout, ZLowOut, ZHighOut,
+    input MDRout, Cout, InPortout, PCout, 
+    input [4:0] opcode,
+    input [31:0] InPortData
 );
 
 wire R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out;
@@ -71,7 +78,7 @@ reg32bit ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
 regPC PC (clr, clk, incPC, PCin, BusMuxOut, BusMuxIn_PC); 
  
 //Input and output ports added to datapath (p2)
-reg32bit InPort (clr, clk, InPortIn, InData, BusMuxIn_InPort); 
+reg32bit InPort (clr, clk, InPortIn, InPortData, BusMuxIn_InPort); 
 reg32bit OutPort (clr, clk, OutPortIn, BusMuxOut, OutPortOut);
 
 //MDR reg initialization
