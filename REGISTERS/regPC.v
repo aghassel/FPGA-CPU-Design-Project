@@ -1,4 +1,3 @@
-
 module regPC #(parameter qInitial = 0)(clr, clk, incPC, enable, D, Q);
 	input wire clr, clk, enable incPC;
 	input wire [31:0]D;
