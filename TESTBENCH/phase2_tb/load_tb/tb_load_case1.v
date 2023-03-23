@@ -207,7 +207,7 @@ module main_ld_1_tb;
 			end
 
 			T4: begin
-				#10 Cout = 1; Zin = 1; opcode = 5'b00011; // ADD
+				#10 Cout = 1; Zin = 1; opcode = ADD; // ADD
 				#15 Cout = 0; Zin = 0;
 			end
 
