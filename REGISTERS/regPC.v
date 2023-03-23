@@ -7,7 +7,8 @@ module regPC #(parameter qInitial = 0)(clr, clk, incPC, enable, D, Q);
 
     always @(posedge incPC) begin
         if (incPC)
-            Q <= Q + 4;
+            Q <= Q + 1;
+
     end
 
 	//At positive clock edge begin, regular register operations  
