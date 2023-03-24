@@ -77,7 +77,7 @@ reg32bit ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
 
 
 //PC reg initialization, using specific incPC input to increment PC by 1 each time set to high
-regPC PC (clr, clk, incPC, PCin, BusMuxOut, d_pc); 
+regPC PC (clr, clk, PCin, BusMuxOut, d_pc); 
 incPCreg PC2 (clk, incPC, PCin, d_pc, BusMuxIn_PC);
  
 //Input and output ports added to datapath (p2)
