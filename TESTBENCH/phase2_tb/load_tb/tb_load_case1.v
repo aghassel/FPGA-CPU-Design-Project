@@ -150,7 +150,7 @@ module tb_load_case1;
 
 			Reg_load1a: begin
 				// Load data into inport
-				#10 InPortData = 32'hFF00FF00; InPortIn = 1; 
+				#10 InPortData = 32'h00800075; InPortIn = 1; 
 				#15 InPortData = 32'hx; InPortIn = 0;
 			end
 			  
