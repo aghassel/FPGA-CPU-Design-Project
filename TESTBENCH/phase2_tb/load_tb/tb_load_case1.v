@@ -1,7 +1,7 @@
 
 `timescale 1ns/1ps
 
-module main_ld_1_tb;
+module tb_load_case1;
 
 	reg clr, clk;
     reg read, write;
@@ -145,6 +145,7 @@ module main_ld_1_tb;
 				Rout = 0;
 				InPortData = 0;
 				opcode = 0;
+				clr = 0;
 			end
 
 			Reg_load1a: begin
@@ -207,7 +208,7 @@ module main_ld_1_tb;
 			end
 
 			T4: begin
-				#10 Cout = 1; Zin = 1; opcode = ADD; // ADD
+				#10 Cout = 1; Zin = 1; opcode = add; // ADD
 				#15 Cout = 0; Zin = 0;
 			end
 
