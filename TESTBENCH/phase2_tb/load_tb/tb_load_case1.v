@@ -192,7 +192,7 @@ module tb_load_case1;
 			end
 
 			T1: begin
-				#10 ZLowOut = 1; PCin = 1; read = 1; MDRin = 1;//Mdatain = 32'h00800075;
+				#10 ZLowOut = 1; PCin = 0; read = 1; MDRin = 1;//Mdatain = 32'h00800075; ZLowOut should be high but for not using ALU to increment PC
 				#15 ZLowOut = 0; PCin = 0; read = 0; MDRin = 0;
 			end
 
