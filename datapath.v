@@ -44,6 +44,7 @@ wire [31:0] BusMuxIn_HI,
             BusMuxIn_MDR, 
             BusMuxIn_InPort,
             Yout,
+            d_pc,
             MARout,
             BusMuxOut,
             C_sign_extended, //Csign extended for branching
@@ -74,8 +75,10 @@ reg32bit LO (clr, clk, LOin, BusMuxOut, BusMuxIn_LO);
 reg32bit ZHigh (clr, clk, Zin, CRegOut[63:32], BusMuxIn_Zhigh);
 reg32bit ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
 
+
 //PC reg initialization, using specific incPC input to increment PC by 1 each time set to high
-regPC PC (clr, clk, incPC, PCin, BusMuxOut, BusMuxIn_PC); 
+regPC PC (clr, clk, incPC, PCin, BusMuxOut, d_pc); 
+incPCreg PC2 (clk, incPC, PCin, d_pc, BusMuxIn_PC);
  
 //Input and output ports added to datapath (p2)
 reg32bit InPort (clr, clk, InPortIn, InPortData, BusMuxIn_InPort); 
