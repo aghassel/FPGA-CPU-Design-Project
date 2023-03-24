@@ -145,7 +145,7 @@ module tb_load_case1;
 				Rout = 0;
 				InPortData = 0;
 				opcode = 0;
-				clr = 0;
+        clr = 0;
 			end
 
 			Reg_load1a: begin
@@ -181,7 +181,6 @@ module tb_load_case1;
 			
 			Reg_load3b: begin
 				// Write 0 to r0 and pc reg
-				
 				#10 InPortOut = 1; Rin = 1; PCin = 1;
 				#15 InPortOut = 0; Rin = 0; PCin = 0;
 
