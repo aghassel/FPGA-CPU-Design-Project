@@ -12,7 +12,7 @@ module ram(
 	assign Q = (write || !read) ?  32'bZZZZZZZZ : mem[MARout];
 	
    always @(posedge clk) begin
-		mem[MARout] = 32'hFF00FF00;
+		//mem[MARout] = 32'hFF00FF00;
 		if(write) mem[MARout] = D;
 	end
 endmodule
