@@ -10,7 +10,6 @@ module bus  #(parameter wordSize = 32)(
 
 wire [4:0] s;
 
-
 encoder32to5 myEncoder (
 	.ein({8'b0, Cout, InPortout, MDRout, PCout, ZHighOut, ZLowOut, HIout, LOout, 
         R15out, R14out, R13out, R12out, R11out, R10out, R9out, R8out, R7out, R6out, R5out, R4out, R3out, R2out, R1out, R0out}),
