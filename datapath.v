@@ -43,7 +43,6 @@ wire [31:0] BusMuxIn_HI,
             BusMuxIn_PC, 
             BusMuxIn_MDR, 
             BusMuxIn_InPort,
-            Mdatain,
             Yout,
             MARout,
             BusMuxOut,
@@ -83,7 +82,7 @@ reg32bit InPort (clr, clk, InPortIn, InPortData, BusMuxIn_InPort);
 reg32bit OutPort (clr, clk, OutPortIn, BusMuxOut, OutPortOut);
 
 //MDR reg initialization
-MD_reg32 MDR (.clr(clr), .clk(clk), .read(read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .Mdatain(Mdatain), .Q(BusMuxIn_MDR)); //special MDR reg
+MD_reg32 MDR (.clr(clr), .clk(clk), .read(read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .BusMuxIn_MDR(BusMuxIn_MDR), .Q(BusMuxIn_MDR)); //special MDR reg
 reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      
 
 // Goes into ALU A input
@@ -93,7 +92,7 @@ reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);
 reg32bit IR (clr, clk, IRin, BusMuxOut, IRdata);
 
 //Memory initialization
-ram myRam (.clk(clk), .read(read), .write(write), .MARout(MARout[8:0]), .D(Mdatain), .Q(BusMuxIn_MDR));
+ram myRam (.clk(clk), .read(read), .write(write), .MARout(MARout[8:0]), .D(BusMuxIn_MDR), .Q(BusMuxIn_MDR));
 
 //Control Branch logic
 CONN_FF myConn_ff (
