@@ -149,40 +149,40 @@ module tb_load_case1;
 			end
 
 			Reg_load1a: begin
-				// Load data into inport
-				#10 InPortData = 32'h00800075; InPortIn = 1; 
-				#15 InPortData = 32'hx; InPortIn = 0;
+				//2// Load data into inport
+				//2#10 InPortData = 32'h00800075; InPortIn = 1; 
+				//2#15 InPortData = 32'hx; InPortIn = 0;
 			end
 			  
 			Reg_load1b: begin
-				// Load data from inport into MDR register
-				#10 InPortOut = 1; MDRin = 1;
-				#15 InPortOut = 0; MDRin = 0;
+				//// Load data from inport into MDR register
+				//#10 InPortOut = 1; MDRin = 1;
+				//#15 InPortOut = 0; MDRin = 0;
 			end
 			  
 			Reg_load2a: begin
 				// Load data into inport
-				#10 InPortData = 32'h75; InPortIn = 1; 
-				#15 InPortData = 32'hx; InPortIn = 0;
+				//#10 InPortData = 32'h75; InPortIn = 1; 
+				//#15 InPortData = 32'hx; InPortIn = 0;
 			end
 			  
 			Reg_load2b: begin
-				// Load data from inport into MAR register
-				#10 InPortOut = 1; MARin = 1;
-				#15 InPortOut = 0; MARin = 0;
-			end
+				//// Load data from inport into MAR register
+				//#10 InPortOut = 1; MARin = 1;
+				//#15 InPortOut = 0; MARin = 0;
+			end//
 			  
 			Reg_load3a: begin
-				// Write 0xFF00FF00 to address 0x75 in memory and load 0 into INPORT
-				#10 write = 1; MDRout = 1; InPortData = 32'h0; InPortIn = 1;
-				#15 write = 0; MDRout = 0; InPortIn = 0; 
-				
+				//// Write 0xFF00FF00 to address 0x75 in memory and load 0 into INPORT
+				//#10 write = 1; MDRout = 1; InPortData = 32'h0; InPortIn = 1;
+				//#15 write = 0; MDRout = 0; InPortIn = 0; 
+				//
 			end
 			
 			Reg_load3b: begin
 				// Write 0 to r0 and pc reg
-				#10 InPortOut = 1; Rin = 1; PCin = 1;
-				#15 InPortOut = 0; Rin = 0; PCin = 0;
+				//#10 InPortOut = 1; Rin = 1; PCin = 1;
+				//#15 InPortOut = 0; Rin = 0; PCin = 0;
 
 			end
 
@@ -202,8 +202,8 @@ module tb_load_case1;
 			end
 
 			T3: begin
-				#10 Grb = 1; BAout = 1; Yin = 1; // What value is the multiplexer outputting here into Y? R0
-				#15 Grb = 0; BAout = 0; Yin = 0; 
+				#10 Grb = 1; BAout = 1; Yin = 1; Rout = 1; // What value is the multiplexer outputting here into Y? R0
+				#15 Grb = 0; BAout = 0; Yin = 0; Rout = 0;
 			end
 
 			T4: begin

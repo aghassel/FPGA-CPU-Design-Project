@@ -13,3 +13,5 @@ module incPCreg #(parameter qInitial = 0)(clk, incPC, enable, D, Q);
 			Q <= D;
 	end
 endmodule
+
+
