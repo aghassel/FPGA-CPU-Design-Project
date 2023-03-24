@@ -43,7 +43,7 @@ wire [31:0] BusMuxIn_HI,
             BusMuxIn_PC, 
             BusMuxIn_MDR, 
             BusMuxIn_InPort,
-            Mdatain
+            Mdatain,
             Yout,
             MARout,
             BusMuxOut,
@@ -53,7 +53,7 @@ wire [31:0] BusMuxIn_HI,
 
 wire [63:0] CRegOut; 
 
-regR0 R0 (BAout, clr, clk, R0in, R0wire, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
+regR0 R0 (BAout, clr, clk, R0in, BusMuxOut, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
 reg32bit R1 (clr, clk, R1in, BusMuxOut, BusMuxIn_R1);
 reg32bit R2 (clr, clk, R2in, BusMuxOut, BusMuxIn_R2);    
 reg32bit R3 (clr, clk, R3in, BusMuxOut, BusMuxIn_R3);  
@@ -93,7 +93,7 @@ reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);
 reg32bit IR (clr, clk, IRin, BusMuxOut, IRdata);
 
 //Memory initialization
-ram myRam (.clk(clk), .read(read), .write(write), .MARout(MARout[8:0]), .D(Mdatain)), .Q(BusMuxIn_MDR));
+ram myRam (.clk(clk), .read(read), .write(write), .MARout(MARout[8:0]), .D(Mdatain), .Q(BusMuxIn_MDR));
 
 //Control Branch logic
 CONN_FF myConn_ff (

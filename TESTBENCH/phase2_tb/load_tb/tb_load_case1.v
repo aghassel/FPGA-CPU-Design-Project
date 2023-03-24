@@ -4,17 +4,17 @@
 module tb_load_case1;
 
 	reg clr, clk;
-    reg read, write;
-    reg BAout, Rin, Rout;
-    reg Gra, Grb, Grc;
+   reg read, write;
+   reg BAout, Rin, Rout;
+   reg Gra, Grb, Grc;
 	reg CONN_in;
 	reg MARin, MDRin;
-    reg HIin, LOin;
+   reg HIin, LOin;
 	reg Yin, Zin;
 	reg PCin, IRin, incPC;
 	reg InPortIn, OutPortIn;
 	reg HIout, LOout, ZHighOut, ZLowOut;
-    reg MDRout, PCout, InPortOut, Cout;
+   reg MDRout, PCout, InPortOut, Cout;
 	reg [31:0] InPortData;
 	reg [4:0] opcode;
 	
@@ -64,7 +64,7 @@ module tb_load_case1;
         .ZHighOut(ZHighOut),
         .MDRout(MDRout),
         .Cout(Cout),
-        .InPortout(InPortout),
+        .InPortOut(InPortOut),
         .PCout(PCout), 
         .opcode(opcode),
         .InPortData(InPortData)
