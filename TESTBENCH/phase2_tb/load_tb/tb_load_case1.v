@@ -187,8 +187,8 @@ module tb_load_case1;
 			end
 
 			T0: begin
-				#10 PCout = 1; MARin = 1; incPC = 1; Zin = 1;
-				#15 PCout = 0; MARin = 0; incPC = 0; Zin = 0;
+				#10 PCout = 1; MARin = 1; Zin = 1; //incPC = 1;
+				#15 PCout = 0; MARin = 0; Zin = 0; //incPC = 0; 
 			end
 
 			T1: begin

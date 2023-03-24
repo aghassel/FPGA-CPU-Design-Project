@@ -1,6 +1,6 @@
 module incPCreg #(parameter qInitial = 0)(clk, incPC, enable, D, Q);
 	input wire clk, enable, incPC;
-	input wire [31:0]D;
+	input [31:0]D;
 	output reg [31:0]Q;
 	
 	initial Q = qInitial;
