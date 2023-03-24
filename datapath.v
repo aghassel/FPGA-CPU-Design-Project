@@ -10,7 +10,7 @@ module datapath (
     input PCin, IRin, incPC, 
     input InPortIn, OutPortIn, 
     input HIout, LOout, ZLowOut, ZHighOut,
-    input MDRout, Cout, InPortout, PCout, 
+    input MDRout, Cout, InPortOut, PCout, 
     input [4:0] opcode,
     input [31:0] InPortData
 );
@@ -82,7 +82,7 @@ reg32bit InPort (clr, clk, InPortIn, InPortData, BusMuxIn_InPort);
 reg32bit OutPort (clr, clk, OutPortIn, BusMuxOut, OutPortOut);
 
 //MDR reg initialization
-MD_reg32 MDR (.clr(clr), .clk(clk), .read(read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .BusMuxIn_MDR(BusMuxIn_MDR), .Q(BusMuxIn_MDR)); //special MDR reg
+MD_reg32 MDR (.clr(clr), .clk(clk), .read(read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .Mdatain(BusMuxIn_MDR), .Q(BusMuxIn_MDR)); //special MDR reg
 reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      
 
 // Goes into ALU A input
@@ -111,6 +111,7 @@ select_and_encode mySAE (
     .Rin(Rin),
     .Rout(Rout),
     .BAout(BAout),
+	 .R0in(R0in),
     .R1in(R1in),
     .R2in(R2in),
     .R3in(R3in), 
@@ -126,6 +127,7 @@ select_and_encode mySAE (
     .R13in(R13in), 
     .R14in(R14in), 
     .R15in(R15in), 
+	 .R0out(R0out),
     .R1out(R1out), 
     .R2out(R2out), 
     .R3out(R3out), 
@@ -169,7 +171,7 @@ bus myBus (
     .ZLowOut(ZLowOut),
     .PCout(PCout),
     .MDRout(MDRout),
-    .InPortout(InPortout),
+    .InPortOut(InPortOut),
     .Cout(Cout),
     //multiplexer
     .BusMuxIn_R0(BusMuxIn_R0),

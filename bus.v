@@ -1,7 +1,7 @@
 module bus  #(parameter wordSize = 32)(
     //encoder signals
     input R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out,
-    input HIout, LOout, ZHighOut, ZLowOut, PCout, MDRout, InPortout, Cout,
+    input HIout, LOout, ZHighOut, ZLowOut, PCout, MDRout, InPortOut, Cout,
     //multiplexer registers
     input [wordSize-1:0] BusMuxIn_R0, BusMuxIn_R1, BusMuxIn_R2, BusMuxIn_R3, BusMuxIn_R4, BusMuxIn_R5, BusMuxIn_R6, BusMuxIn_R7, BusMuxIn_R8, BusMuxIn_R9, BusMuxIn_R10, BusMuxIn_R11, BusMuxIn_R12, BusMuxIn_R13, BusMuxIn_R14, BusMuxIn_R15,
     input [wordSize-1:0] BusMuxIn_HI, BusMuxIn_LO, BusMuxIn_Zhigh, BusMuxIn_Zlow, BusMuxIn_PC, BusMuxIn_MDR, BusMuxIn_InPort, C_sign_extended,
@@ -11,7 +11,7 @@ module bus  #(parameter wordSize = 32)(
 wire [4:0] s;
 
 encoder32to5 myEncoder (
-	.ein({8'b0, Cout, InPortout, MDRout, PCout, ZHighOut, ZLowOut, HIout, LOout, 
+	.ein({8'b0, Cout, InPortOut, MDRout, PCout, ZHighOut, ZLowOut, HIout, LOout, 
         R15out, R14out, R13out, R12out, R11out, R10out, R9out, R8out, R7out, R6out, R5out, R4out, R3out, R2out, R1out, R0out}),
 	.eout(s)
 );
