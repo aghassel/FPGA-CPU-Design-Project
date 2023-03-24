@@ -11,7 +11,9 @@ module alu_test #(parameter wordSize = 32)(
     parameter   add = 5'b00001, sub = 5'b00010, mul = 5'b00011, div = 5'b00100, shr = 5'b00101, shl = 5'b00110, shra = 5'b00111, 
                 ror = 5'b01000, rol = 5'b01001, log_and = 5'b01010, log_or = 5'b01011, log_neg = 5'b01100, log_xor = 5'b01101,
                 log_nor = 5'b01110, log_not = 5'b01111; 
+
 	wire tempAdd, tempSub;
+    
     wire [wordSize-1:0] temp32_out, add32_out, sub32_out;
 	wire [(wordSize*2)-1:0] temp64_out, mul64_out, div64_out;
 	 
