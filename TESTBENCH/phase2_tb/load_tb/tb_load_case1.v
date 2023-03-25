@@ -181,8 +181,8 @@ module tb_load_case1;
 			
 			Reg_load3b: begin
 				// Write 0 to r0 and pc reg
-				#10 InPortOut = 1; Rin = 1; PCin = 1;
-				#15 InPortOut = 0; Rin = 0; PCin = 0;
+				//#10 InPortOut = 1; Rin = 1; PCin = 1;
+				//#15 InPortOut = 0; Rin = 0; PCin = 0;
 
 			end
 
