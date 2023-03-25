@@ -1,8 +1,8 @@
 `timescale 1ns/10ps
 
-module alu (A, B, opcode, clk, clr, control, C);
+module alu (A, B, opcode, clk, clr, incPC, CONN_out, control, C);
     input wire [31:0] A, B, control;
-    input wire clk, clr;
+    input wire clk, clr, incPC, CONN_out;
     input wire [4:0] opcode;
     output reg [63:0] C;
     
@@ -98,6 +98,12 @@ module alu (A, B, opcode, clk, clr, control, C);
                     C <= 64'd0;
                 end
             endcase 
+            if (incPC) begin
+                C <= B + 1;
+            end
+            if (CONN_out) begin
+                C <= A + B;
+            end  
         end
     //end
 endmodule

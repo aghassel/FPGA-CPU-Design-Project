@@ -1,7 +1,7 @@
 module regPC #(parameter qInitial = 0)(clr, clk, enable, D, Q);
 	input wire clr, clk, enable;
-	input wire [31:0]D;
-	output reg [31:0]Q;
+	input wire [31:0] D;
+	output reg [31:0] Q;
 	
 	initial Q = qInitial;
 		

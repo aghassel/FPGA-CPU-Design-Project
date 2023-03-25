@@ -19,7 +19,8 @@ module tb_load_case1;
 	reg [4:0] opcode;
 	
 
-    parameter   add = 5'b00001,
+    parameter   nop = 5'b00000,
+				add = 5'b00001,
                 sub = 5'b00010, 
                 mul = 5'b00011, 
                 div = 5'b00100,
@@ -145,38 +146,37 @@ module tb_load_case1;
 				Rout = 0;
 				InPortData = 0;
 				opcode = 0;
-        clr = 0;
+        		clr = 0;
 			end
 
 			Reg_load1a: begin
-				// Load data into inport
-				#10 InPortData = 32'h00800075; InPortIn = 1; 
-				#15 InPortData = 32'hx; InPortIn = 0;
-			end
-			  
-			Reg_load1b: begin
-				// Load data from inport into MDR register
-				#10 InPortOut = 1; MDRin = 1;
-				#15 InPortOut = 0; MDRin = 0;
-			end
-			  
-			Reg_load2a: begin
 				// Load data into inport
 				#10 InPortData = 32'h75; InPortIn = 1; 
 				#15 InPortData = 32'hx; InPortIn = 0;
 			end
 			  
-			Reg_load2b: begin
-				// Load data from inport into MAR register
+			Reg_load1b: begin
+				// Load data from inport into MAR register for address 75
 				#10 InPortOut = 1; MARin = 1;
 				#15 InPortOut = 0; MARin = 0;
 			end
 			  
+			Reg_load2a: begin
+				// Load data into inport
+				#10 InPortData = 32'h8; InPortIn = 1; 
+				#15 InPortData = 32'hx; InPortIn = 0;
+			end
+			  
+			Reg_load2b: begin
+				// Load data from inport into MDR register
+				#10 InPortOut = 1; MDRin = 1; 
+				#15 InPortOut = 0; MDRin = 0;
+			end
+			  
 			Reg_load3a: begin
-				// Write 0xFF00FF00 to address 0x75 in memory and load 0 into INPORT
-				#10 write = 1; MDRout = 1; InPortData = 32'h0; InPortIn = 1;
-				#15 write = 0; MDRout = 0; InPortIn = 0; 
-				
+				// Write 0x00000008 to address 0x75 in memory and load 0 into INPORT
+				#10 write = 1; InPortData = 32'h0; InPortIn = 1;
+				#15 write = 0; InPortIn = 0; 
 			end
 			
 			Reg_load3b: begin
@@ -187,12 +187,12 @@ module tb_load_case1;
 			end
 
 			T0: begin
-				#10 PCout = 1; MARin = 1; Zin = 1; //incPC = 1;
-				#15 PCout = 0; MARin = 0; Zin = 0; //incPC = 0; 
+				#10 PCout = 1; MARin = 1; Zin = 1; incPC = 1;
+				#15 PCout = 0; MARin = 0; Zin = 0; incPC = 0; 
 			end
 
 			T1: begin
-				#10 ZLowOut = 1; PCin = 1; read = 1; MDRin = 1;//Mdatain = 32'h00800075; ZLowOut should be high but for not using ALU to increment PC
+				#10 ZLowOut = 1; PCin = 1; read = 1; MDRin = 1;//ZLowOut should be high but for not using ALU to increment PC
 				#15 ZLowOut = 0; PCin = 0; read = 0; MDRin = 0;
 			end
 
@@ -202,17 +202,17 @@ module tb_load_case1;
 			end
 
 			T3: begin
-				#10 Grb = 1; BAout = 1; Yin = 1; // What value is the multiplexer outputting here into Y? R0
+				#10 Grb = 1; BAout = 1; Yin = 1; // R0
 				#15 Grb = 0; BAout = 0; Yin = 0; 
 			end
 
 			T4: begin
 				#10 Cout = 1; Zin = 1; opcode = add; // ADD
-				#15 Cout = 0; Zin = 0;
+				#15 Cout = 0; Zin = 0; opcode = nop;
 			end
 
 			T5: begin
-				#10 ZLowOut = 1; MARin = 1; // Address to read from CPU is coming from output of addition operation which is happening on what? Adding 0 to mem offset so 0x75
+				#10 ZLowOut = 1; MARin = 1; // Adding 0 to mem offset so 0x75
 				#15 ZLowOut = 0; MARin = 0;
 			end
 
@@ -228,7 +228,5 @@ module tb_load_case1;
 		endcase
 
 	end
-
-
 endmodule
 

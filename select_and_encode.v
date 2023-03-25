@@ -65,10 +65,5 @@ module select_and_encode (
     assign R14out = dec_out[14] & Rout_or;
     assign R15out = dec_out[15] & Rout_or;
 
-    assign C_sign_extended = irOut[18] == 1 ? {13'b1111111111111, irOut[18:0]} : {13'b0, irOut[18:0]};
+    assign C_sign_extended = irOut[17] == 1 ? {14'b11111111111111, irOut[17:0]} : {14'b0, irOut[17:0]};
 endmodule
-
-
-
-
-    

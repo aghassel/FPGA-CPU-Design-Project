@@ -43,6 +43,7 @@ wire [31:0] BusMuxIn_HI,
             BusMuxIn_PC, 
             BusMuxIn_MDR, 
             BusMuxIn_InPort,
+            RamDataOut,
             Yout,
             d_pc,
             MARout,
@@ -54,12 +55,12 @@ wire [31:0] BusMuxIn_HI,
 wire [63:0] CRegOut; 
 
 regR0 R0 (BAout, clr, clk, R0in, BusMuxOut, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
-reg32bit R1 (clr, clk, R1in, BusMuxOut, BusMuxIn_R1);
-reg32bit R2 (clr, clk, R2in, BusMuxOut, BusMuxIn_R2);    
-reg32bit R3 (clr, clk, R3in, BusMuxOut, BusMuxIn_R3);  
-reg32bit R4 (clr, clk, R4in, BusMuxOut, BusMuxIn_R4);  
+reg32bit #(32'd5) R1 (clr, clk, R1in, BusMuxOut, BusMuxIn_R1);
+reg32bit #(32'd10) R2 (clr, clk, R2in, BusMuxOut, BusMuxIn_R2);    
+reg32bit #(32'd5) R3 (clr, clk, R3in, BusMuxOut, BusMuxIn_R3);  
+reg32bit #(32'h67) R4 (clr, clk, R4in, BusMuxOut, BusMuxIn_R4);  
 reg32bit R5 (clr, clk, R5in, BusMuxOut, BusMuxIn_R5);  
-reg32bit R6 (clr, clk, R6in, BusMuxOut, BusMuxIn_R6);  
+reg32bit #(32'd1) R6 (clr, clk, R6in, BusMuxOut, BusMuxIn_R6);  
 reg32bit R7 (clr, clk, R7in, BusMuxOut, BusMuxIn_R7);  
 reg32bit R8 (clr, clk, R8in, BusMuxOut, BusMuxIn_R8);  
 reg32bit R9 (clr, clk, R9in, BusMuxOut, BusMuxIn_R9);  
@@ -70,21 +71,22 @@ reg32bit R13 (clr, clk, R13in, BusMuxOut, BusMuxIn_R13);
 reg32bit R14 (clr, clk, R14in, BusMuxOut,  BusMuxIn_R14);  
 reg32bit R15 (clr, clk, R15in, BusMuxOut,  BusMuxIn_R15); 
 
-reg32bit HI (clr, clk, HIin, BusMuxOut, BusMuxIn_HI); 
-reg32bit LO (clr, clk, LOin, BusMuxOut, BusMuxIn_LO);
-reg32bit ZHigh (clr, clk, Zin, CRegOut[63:32], BusMuxIn_Zhigh);
-reg32bit ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
+reg32bit #(32'd100) HI (clr, clk, HIin, BusMuxOut, BusMuxIn_HI); 
+reg32bit #(32'd10) LO (clr, clk, LOin, BusMuxOut, BusMuxIn_LO);
+reg32bit #(32'd100) ZHigh (clr, clk, Zin, CRegOut[63:32], BusMuxIn_Zhigh);
+reg32bit #(32'd75) ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
 
 
 //PC reg initialization, using specific incPC input to increment PC by 1 each time set to high
-regPC PC (clr, clk, PCin, BusMuxOut, BusMuxIn_Pc); 
+regPC PC (clr, clk, PCin, BusMuxOut, BusMuxIn_PC); 
  
 //Input and output ports added to datapath (p2)
 reg32bit InPort (clr, clk, InPortIn, InPortData, BusMuxIn_InPort); 
 reg32bit OutPort (clr, clk, OutPortIn, BusMuxOut, OutPortOut);
 
 //MDR reg initialization
-MD_reg32 MDR (.clr(clr), .clk(clk), .read(read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .Mdatain(BusMuxIn_MDR), .Q(BusMuxIn_MDR)); //special MDR reg
+
+MD_reg32 MDR (.clr(clr), .clk(clk), .read(read), .MDRin(MDRin), .BusMuxOut(BusMuxOut), .Mdatain(RamDataOut), .Q(BusMuxIn_MDR)); //special MDR reg
 reg32bit MAR (clr, clk, MARin, BusMuxOut, MARout);      
 
 // Goes into ALU A input
@@ -94,7 +96,8 @@ reg32bit Y (clr, clk, Yin, BusMuxOut, Yout);
 reg32bit IR (clr, clk, IRin, BusMuxOut, IRdata);
 
 //Memory initialization
-ram myRam (.clk(clk), .read(read), .write(write), .MARout(MARout[8:0]), .D(BusMuxIn_MDR), .Q(BusMuxIn_MDR));
+//RamDataOut used as MDR input since, using BusMuxIn_MDR would have two registers writing to the same input.
+ram myRam (.clk(clk), .read(read), .write(write), .MARout(MARout[8:0]), .D(BusMuxIn_MDR), .Q(RamDataOut));
 
 //Control Branch logic
 CONN_FF myConn_ff (
@@ -113,7 +116,7 @@ select_and_encode mySAE (
     .Rin(Rin),
     .Rout(Rout),
     .BAout(BAout),
-	 .R0in(R0in),
+	.R0in(R0in),
     .R1in(R1in),
     .R2in(R2in),
     .R3in(R3in), 
@@ -129,7 +132,7 @@ select_and_encode mySAE (
     .R13in(R13in), 
     .R14in(R14in), 
     .R15in(R15in), 
-	 .R0out(R0out),
+	.R0out(R0out),
     .R1out(R1out), 
     .R2out(R2out), 
     .R3out(R3out), 
@@ -207,6 +210,8 @@ bus myBus (
 alu_test myAlu(
 	.clk(clk),
 	.clr(clr), 
+    .incPC(incPC),
+    .CONN_out(Control_unit_in),
 	.B(BusMuxOut),
     .A(Yout),
 	.opcode(opcode),

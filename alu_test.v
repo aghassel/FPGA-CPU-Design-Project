@@ -1,5 +1,5 @@
 module alu_test #(parameter wordSize = 32)(
-    input wire clk, clr,
+    input wire clk, clr, incPC, CONN_out,
     //32-bit input registers A, B,
     input wire [wordSize-1:0] A, B,
     //5-bit opcode
@@ -8,7 +8,8 @@ module alu_test #(parameter wordSize = 32)(
     output reg [(wordSize*2)-1:0] C
 );
 
-    parameter   add = 5'b00001, sub = 5'b00010, mul = 5'b00011, div = 5'b00100, shr = 5'b00101, shl = 5'b00110, shra = 5'b00111, 
+    parameter   nop = 5'b00000,
+                add = 5'b00001, sub = 5'b00010, mul = 5'b00011, div = 5'b00100, shr = 5'b00101, shl = 5'b00110, shra = 5'b00111, 
                 ror = 5'b01000, rol = 5'b01001, log_and = 5'b01010, log_or = 5'b01011, log_neg = 5'b01100, log_xor = 5'b01101,
                 log_nor = 5'b01110, log_not = 5'b01111; 
 
@@ -27,7 +28,6 @@ module alu_test #(parameter wordSize = 32)(
 	alu_32mul myMul (.multiplicand(A), .multiplier(B), .product(mul64_out));
 	
     always @(*) begin
-	
         case(opcode)
             add: begin
                 C [31:0] <= add32_out[31:0];
@@ -90,8 +90,14 @@ module alu_test #(parameter wordSize = 32)(
                 C [63:32] <= 32'd0;
             end
             default: begin
-                C <= 64'd0;
+                C <= A;
             end
         endcase 
+        if (incPC) begin
+            C <= B + 1;
+        end
+        if (CONN_out) begin
+            C <= A + B;
+        end  
     end
 endmodule

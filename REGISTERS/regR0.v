@@ -2,7 +2,7 @@ module regR0(BAout, clr, clk, enable, D, Q);
 	input wire BAout, clr, clk, enable;
 	input wire [31:0] D;
 	output wire [31:0] Q;
-	
+
 	//At positive clock edge begin
 	reg [31:0] regout;
 	

@@ -1,21 +1,22 @@
-`timescale 1ns/1ps
-//Does operation ldi R1, $75
-// R1 will hold the value $75 which is 117 in decimal
-// IR opcode: h08800075
-module tb_load_case3;
+// jr test bench: jr R2
+// opcode: A1000000
+// R2 holds 10, so PC should hold 10 after T2
 
-	reg clr, clk;
-	reg read, write;
-	reg BAout, Rin, Rout;
-	reg Gra, Grb, Grc;
+`timescale 1ns/1ps
+module jr_tb;
+
+    reg clr, clk;
+    reg read, write;
+    reg BAout, Rin, Rout;
+    reg Gra, Grb, Grc;
 	reg CONN_in;
 	reg MARin, MDRin;
-	reg HIin, LOin;
+    reg HIin, LOin;
 	reg Yin, Zin;
 	reg PCin, IRin, incPC;
 	reg InPortIn, OutPortIn;
 	reg HIout, LOout, ZHighOut, ZLowOut;
-	reg MDRout, PCout, InPortOut, Cout;
+    reg MDRout, PCout, InPortOut, Cout;
 	reg [31:0] InPortData;
 	reg [4:0] opcode;
 	
@@ -97,18 +98,10 @@ module tb_load_case3;
 	
 	always @(posedge clk) begin
 		case (present_state)
-			Default    : #40 present_state = Reg_load1a;
-			Reg_load1a : #40 present_state = Reg_load1b;
-			Reg_load1b : #40 present_state = Reg_load2a;
-			Reg_load2a : #40 present_state = Reg_load2b;
-			Reg_load2b : #40 present_state = Reg_load3a;
-			Reg_load3a : #40 present_state = Reg_load3b;
-			Reg_load3b : #40 present_state = T0;
+			Default    : #40 present_state = T0;
 			T0         : #40 present_state = T1;
 			T1         : #40 present_state = T2;
 			T2         : #40 present_state = T3;
-			T3         : #40 present_state = T4;
-			T4         : #40 present_state = T5;
 		endcase
 	end
 	
@@ -148,76 +141,30 @@ module tb_load_case3;
         		clr = 0;
 			end
 
-			Reg_load1a: begin
-				// Load data into inport
-				#10 InPortData = 32'h50; InPortIn = 1; 
-				#15 InPortData = 32'hx; InPortIn = 0;
-			end
-			  
-			Reg_load1b: begin
-				// Load data from inport into MAR register for address 50
-				#10 InPortOut = 1; MARin = 1;
-				#15 InPortOut = 0; MARin = 0;
-			end
-			  
-			Reg_load2a: begin
-				// Load data into inport
-				#10 InPortData = 32'h00000032; InPortIn = 1; 
-				#15 InPortData = 32'hx; InPortIn = 0;
-			end
-			  
-			Reg_load2b: begin
-				// Load data from inport into MDR register
-				#10 InPortOut = 1; MDRin = 1; 
-				#15 InPortOut = 0; MDRin = 0;
-			end
-			  
-			Reg_load3a: begin
-				// Write 0x00000008 to address 0x75 in memory and load 0 into INPORT
-				#10 write = 1; InPortData = 32'h0; InPortIn = 1;
-				#15 write = 0; InPortIn = 0; 
-			end
-			
-			Reg_load3b: begin
-				// Write 0 to r0 and pc reg
-				#10 InPortOut = 1; Rin = 1; PCin = 1;
-				#15 InPortOut = 0; Rin = 0; PCin = 0;
-
-			end
-			// R5 preinitialized to hold 5
+            //Place PC in MAR to point to first instruction
 			T0: begin
 				#10 PCout = 1; MARin = 1; Zin = 1; incPC = 1;
 				#15 PCout = 0; MARin = 0; Zin = 0; incPC = 0; 
 			end
 
+            //Read in value from MAR location in mem and place in MDR
+            //Increment PC
 			T1: begin
-				#10 ZLowOut = 1; PCin = 1; read = 1; MDRin = 1;
+				#10 ZLowOut = 1; PCin = 1; read = 1; MDRin = 1;//ZLowOut should be high but for not using ALU to increment PC
 				#15 ZLowOut = 0; PCin = 0; read = 0; MDRin = 0;
 			end
 
+            //Place MDR in IR
 			T2: begin
 				#10 MDRout = 1; IRin = 1;
 				#15 MDRout = 0; IRin = 0;
 			end
-
+            //Place Rb in ALU
 			T3: begin
-				#10 Grb = 1; BAout = 1; Yin = 1; // R0
-				#15 Grb = 0; BAout = 0; Yin = 0; 
-			end
-
-			T4: begin
-				#10 Cout = 1; Zin = 1; opcode = add; // ADD
-				#15 Cout = 0; Zin = 0; opcode = nop;
-			end
-
-			T5: begin
-				#10 ZLowOut = 1; Gra = 1; Rin = 1;  // Adding 0 to mem offset so 0x75
-				#15 ZLowOut = 0; Gra = 0; Rin = 0;
+				#10 Gra = 1; Rout = 1; PCin = 1; 
+				#15 Gra = 0; Rout = 0; PCin = 0;
 			end
 		endcase
 
 	end
-
-
 endmodule
-
