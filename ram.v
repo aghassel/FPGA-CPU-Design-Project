@@ -7,12 +7,16 @@ module ram(
 );
 	reg [31:0] mem [511:0];
 	
+	`ifdef MODEL_TECH
+	initial $readmemh("../../ram.hex", mem);
+	`else
 	initial $readmemh("ram.hex", mem);
-	
+	`endif
+
 	assign Q = (write || !read) ?  32'bZZZZZZZZ : mem[MARout];
 	
    always @(posedge clk) begin
-	    mem[0] = 32'hB1800000; //opcode for branch case 3 testbench 
+	    //mem[0] = 32'hB1800000; //opcode for branch case 3 testbench 
 		if(write) mem[MARout] = D;
 	end
 endmodule
