@@ -1,18 +1,9 @@
 module datapath (
-    input clr, clk,
-    input read, write,
-    input BAout, Rin, Rout,
-    input Gra, Grb, Grc,
-    input CONN_in,
-    input MARin, MDRin,
-    input HIin, LOin,
-    input Yin, Zin,
-    input PCin, IRin, incPC, 
-    input InPortIn, OutPortIn, 
-    input HIout, LOout, ZLowOut, ZHighOut,
-    input MDRout, Cout, InPortOut, PCout, 
-    input [4:0] opcode,
-    input [31:0] InPortData
+    //Test Bench inputs/outputs but goes through datapath to control unit
+    input run, clear,
+    input clock reset, stop,
+    //Inport data from external device
+    input [31:0] InPortData,
 );
 
 wire R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out;
@@ -49,10 +40,54 @@ wire [31:0] BusMuxIn_HI,
             MARout,
             BusMuxOut,
             C_sign_extended, //Csign extended for branching
-            IRdata, //Output of IR reg
             OutPortOut; //Wire for outport. Goes no where
 
 wire [63:0] CRegOut; 
+
+
+//Control unit initialization
+ctrl_unit Control_unit (
+    //Test Bench inputs/outputs but goes through datapath
+    .run(run), 
+    .clear(clear),
+    .clock(clock), 
+    .reset(reset), 
+    .stop(stop),
+    //Datapath inputs/outputs
+    .IRdata(IRdata),
+    .clr(clr),
+    .clk(clk),
+    .read(read),
+    .write(write),
+    .BAout(BAout),
+    .Rin(Rin),
+    .Rout(Rout),
+    .Gra(Gra),
+    .Grb(Grb),
+    .Grc(Grc),
+    .CONN_in(CONN_in),
+    .MARin(MARin),
+    .MDRin(MDRin),
+    .HIin(HIin),
+    .LOin(LOin),
+    .Yin(Yin),
+    .Zin(Zin),
+    .PCin(PCin),
+    .IRin(IRin),
+    .incPC(incPC), 
+    .InPortIn(InPortIn),
+    .OutPortIn(OutPortIn), 
+    .HIout(HIout),
+    .LOout(LOout),
+    .ZLowOut(ZLowOut),
+    .ZHighOut(ZHighOut),
+    .MDRout(MDRout),
+    .Cout(Cout),
+    .InPortOut(InPortOut),
+    .PCout(PCout), 
+    .alu_opcode(alu_opcode),
+);
+
 
 regR0 R0 (BAout, clr, clk, R0in, BusMuxOut, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
 reg32bit #(32'd5) R1 (clr, clk, R1in, BusMuxOut, BusMuxIn_R1);
@@ -106,6 +141,7 @@ CONN_FF myConn_ff (
     .CONN_in(CONN_in),
     .CONN_out(Control_unit_in)
 );
+
 
 //Select and Encode logic for selecting register functions based on opcode
 select_and_encode mySAE (
