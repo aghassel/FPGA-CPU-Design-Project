@@ -20,8 +20,11 @@ module tb_minisrc;
         );
 
     initial begin
-		#2 clock = 1; reset = 1;
-        #2 reset = 0;
-		#2 forever clock = ~clock;
+		#2 clock = 0; reset = 1;
+      #2 reset = 0;
+      #2 stop = 0;
+		  
 	end
+    always
+        #2 clock = ~clock;
 endmodule

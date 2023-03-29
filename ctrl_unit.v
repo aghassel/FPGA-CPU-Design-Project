@@ -322,7 +322,7 @@ module ctrl_unit(
                 run = 1; clear = 1;
                 #5 clr = 1;
                 Gra = 0; Grb = 0; Grc = 0; Rin = 0;              
-			    BAout = 0; Rin = 0; Rout = 0;
+				BAout = 0; Rin = 0; Rout = 0;
                 CONN_in = 0;
                 MARin = 0; MDRin = 0;
                 HIin = 0; LOin = 0;
@@ -364,14 +364,6 @@ module ctrl_unit(
                 #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_subop;
                 #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end 
-            mul4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_mulop;
-                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
-            end
-            div4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_divop;
-                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
-            end
             and4 : begin
                 #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_andop;
                 #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;

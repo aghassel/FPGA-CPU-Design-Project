@@ -44,8 +44,8 @@ wire [31:0] IRdata,
             d_pc,
             MARout,
             BusMuxOut,
-            C_sign_extended, //Csign extended for branching
-            OutPortOut; //Wire for outport. Goes no where
+            C_sign_extended,
+            OutPortOut;
 
 wire [63:0] CRegOut; 
 
