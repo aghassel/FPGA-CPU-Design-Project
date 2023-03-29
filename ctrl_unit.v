@@ -3,11 +3,11 @@
 `timescale 1ns/1ps
 module ctrl_unit(
     //Test Bench inputs/outputs but goes through datapath
-    input clock, reset, stop,
-    output run, clear,
+    input clk, reset, stop,
+    output reg run, clear,
     //Datapath inputs/outputs
     input [31:0] IRdata,
-    output reg clr, clk,
+    output reg clr,
     output reg read, write,
     output reg BAout, Rin, Rout,
     output reg Gra, Grb, Grc,
@@ -21,7 +21,7 @@ module ctrl_unit(
     output reg MDRout, Cout, InPortOut, PCout, 
     output reg [4:0] alu_opcode
 );
-    assign clk = clock;
+    
 
     //Control unit states
     parameter   reset_state = 8'b00000000, 
@@ -131,10 +131,11 @@ module ctrl_unit(
                 ir_in   = 5'b10110,
                 ir_out  = 5'b10111;
 
-    reg [7:0] prev_state = fecth0;
+    reg [7:0] prev_state = fetch0;
     reg [7:0] present_state = halt;
-	
-	
+	 
+	 
+
 	always @(posedge clk, posedge reset) begin
 
         if (reset) begin    //reset the processor
@@ -286,8 +287,7 @@ module ctrl_unit(
                 br3     : #40 present_state = br4;
                 br4     : #40 present_state = br5;
                 br5     : #40 present_state = br6;
-                br6     : #40 present_state = br7;
-                br7     : #40 present_state = fetch0;
+                br6     : #40 present_state = fetch0;
                 
                 //Jump register instructions
                 jr3     : #40 present_state = fetch0;
@@ -308,7 +308,7 @@ module ctrl_unit(
                 out3    : #40 present_state = fetch0;
 
                 //If restart, go to halt
-                restart : begin
+                reset_state : begin
                     prev_state = fetch0;
                     #40 present_state = halt;
                 end
@@ -319,7 +319,7 @@ module ctrl_unit(
 	always @(present_state) begin
 		case (present_state)
 			reset_state : begin  
-                run = 1; clear = 0;
+                run = 1; clear = 1;
                 #5 clr = 1;
                 Gra = 0; Grb = 0; Grc = 0; Rin = 0;              
 			    BAout = 0; Rin = 0; Rout = 0;
@@ -339,8 +339,8 @@ module ctrl_unit(
 				#15 PCout = 0; MARin = 0; Zin = 0; incPC = 0; 
 			end
             fetch1: begin
-				#10 ZLowOut = 1; PCin = 1; Read = 1; MDRin = 1;
-				#15 ZLowOut = 0; PCin = 0; Read = 0; MDRin = 0; 
+				#10 ZLowOut = 1; PCin = 1; read = 1; MDRin = 1;
+				#15 ZLowOut = 0; PCin = 0; read = 0; MDRin = 0; 
 			end
             fetch2: begin
 				#10 MDRout = 1; IRin = 1;
@@ -357,76 +357,76 @@ module ctrl_unit(
                 #15 Gra = 0; Yin = 0; 
             end
             add4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_addop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_addop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end 
             sub4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_subop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_subop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end 
             mul4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_mulop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_mulop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end
             div4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_divop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_divop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end
             and4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_andop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_andop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end
             or4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_orop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_orop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end
             shl4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_shlop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_shlop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end
             shr4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_shrop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_shrop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end
             shra4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_shraop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_shraop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end
             ror4  :begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_rorop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_rorop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end
             rol4 : begin
-                #10 Zin = 1; Grc = 1; Rout = 1; opcode = alu_rolop;
-                #15 Zin = 0; Grc = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_rolop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end
             addi4  :begin 
-                #10 Zin = 1; Cout = 1; opcode = alu_addop;
-                #15 Zin = 0; Cout = 0; opcode = alu_nop;
+                #10 Zin = 1; Cout = 1; alu_opcode = alu_addop;
+                #15 Zin = 0; Cout = 0; alu_opcode = alu_nop;
             end
             andi4 : begin 
-                #10 Zin = 1; Cout = 1; opcode = alu_andop;
-                #15 Zin = 0; Cout = 0; opcode = alu_nop;
+                #10 Zin = 1; Cout = 1; alu_opcode = alu_andop;
+                #15 Zin = 0; Cout = 0; alu_opcode = alu_nop;
             end
             ori4 : begin 
-                #10 Zin = 1; Cout = 1; opcode = alu_orop;
-                #15 Zin = 0; Cout = 0; opcode = alu_nop;
+                #10 Zin = 1; Cout = 1; alu_opcode = alu_orop;
+                #15 Zin = 0; Cout = 0; alu_opcode = alu_nop;
             end
             mul4 : begin
-                #10 Zin = 1; Grb = 1; Rout = 1; opcode = alu_mulop;
-                #15 Zin = 0; Grb = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grb = 1; Rout = 1; alu_opcode = alu_mulop;
+                #15 Zin = 0; Grb = 0; Rout = 0; alu_opcode = alu_nop;
             end
             div4 : begin
-                #10 Zin = 1; Grb = 1; Rout = 1; opcode = alu_divop;
-                #15 Zin = 0; Grb = 0; Rout = 0; opcode = alu_nop;
+                #10 Zin = 1; Grb = 1; Rout = 1; alu_opcode = alu_divop;
+                #15 Zin = 0; Grb = 0; Rout = 0; alu_opcode = alu_nop;
             end        
             neg4 : begin
-                #10 Zin = 1; opcode = alu_negop;
-                #15 Zin = 0; opcode = alu_nop;
+                #10 Zin = 1; alu_opcode = alu_negop;
+                #15 Zin = 0; alu_opcode = alu_nop;
             end
             not4 : begin
-                #10 Zin = 1; opcode = alu_notop;
-                #15 Zin = 0; opcode = alu_nop;
+                #10 Zin = 1; alu_opcode = alu_notop;
+                #15 Zin = 0; alu_opcode = alu_nop;
             end
             add5, sub5, and5, or5, shl5, shr5, shra5, ror5, rol5, andi5, addi5, ori5, not5, neg5 : begin
                 #10 ZLowOut = 1; Gra = 1; Rin = 1;
@@ -447,8 +447,8 @@ module ctrl_unit(
                 #10 Grb = 0; BAout = 0; Yin = 0;  
             end
             ld4, ldi4 : begin
-                #10 Zin = 1; Cout = 1; opcode = alu_addop;
-                #15 Zin = 0; Cout = 0; opcode = alu_nop;
+                #10 Zin = 1; Cout = 1; alu_opcode = alu_addop;
+                #15 Zin = 0; Cout = 0; alu_opcode = alu_nop;
             end
             ld5 : begin
                 #10 ZLowOut = 1; MARin = 1;
@@ -473,8 +473,8 @@ module ctrl_unit(
                 #10 Grb = 0; BAout = 0; Yin = 0;  
             end   
             st4: begin 
-                #10 Zin = 1; Cout = 1; opcode = alu_addop;
-                #15 Zin = 0; Cout = 0; opcode = alu_nop;
+                #10 Zin = 1; Cout = 1; alu_opcode = alu_addop;
+                #15 Zin = 0; Cout = 0; alu_opcode = alu_nop;
             end
             st5 : begin
                 #10 ZLowOut = 1; MARin = 1;
@@ -495,7 +495,7 @@ module ctrl_unit(
 				#15 PCout = 0; Yin = 0; 
             end
             br5: begin 
-                #10 Cout = 1; Zin = 1; CONN_in = 1; opcode = nop;
+                #10 Cout = 1; Zin = 1; CONN_in = 1; alu_opcode = alu_nop;
 				#15 Cout = 0; Zin = 0; CONN_in = 0; 
             end
             br6: begin
@@ -504,7 +504,7 @@ module ctrl_unit(
             end
 
             //Jump register and Jump and Link Register instructions
-            j3 : begin
+            jr3 : begin
                 #10 Gra = 1; Rout = 1; PCin = 1;  
                 #10 Gra = 0; Rout = 0; PCin = 0;  
             end
@@ -519,8 +519,8 @@ module ctrl_unit(
                 #15 InPortIn = 0; Rin = 0; Gra = 0;
             end
             out3: begin
-                #10 OutPortOut = 1; Rout = 1; Gra = 1;
-                #15 OutPortOut = 0; Rout = 0; Gra = 0;
+                #10 OutPortIn = 1; Rout = 1; Gra = 1;
+                #15 OutPortIn = 0; Rout = 0; Gra = 0;
             end
             
             //Mfhi and Mflo instruction states
@@ -535,7 +535,7 @@ module ctrl_unit(
 
             //No operation instruction states
             nop3: begin
-                #10 opcode = alu_nop;
+                #10 alu_opcode = alu_nop;
             end
 
             //If halted, show that not running
@@ -543,13 +543,6 @@ module ctrl_unit(
                 run = 0;
                 clear = 0;
             end
-
-            //If in reset, show not running and set clear high
-            reset: begin
-                run = 0;
-                #5 clear = 1;
-            end
-
     endcase
 end
 
