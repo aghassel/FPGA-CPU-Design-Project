@@ -1,7 +1,7 @@
 module datapath (
     //Test Bench inputs/outputs but goes through datapath to control unit
     input run, clear,
-    input clock reset, stop,
+    input clock, reset, stop,
     //Inport data from external device
     input [31:0] InPortData,
 );
