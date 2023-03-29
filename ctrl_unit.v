@@ -19,12 +19,12 @@ module ctrl_unit(
     output reg InPortIn, OutPortIn, 
     output reg HIout, LOout, ZLowOut, ZHighOut,
     output reg MDRout, Cout, InPortOut, PCout, 
-    output reg [4:0] alu_opcode,
+    output reg [4:0] alu_opcode
 );
     assign clk = clock;
 
     //Control unit states
-    parameter   reset_state = 8'b00000000,
+    parameter   reset_state = 8'b00000000, halt = 8'b11111111,
                 //Fetch states
                 fetch0 = 8'b00000001, fetch1 = 8'b00000010, fetch2= 8'b00000011,
                 //Add states
@@ -178,7 +178,7 @@ module ctrl_unit(
                     ir_mflo : #40 present_state = mflo3;
                     ir_in   : #40 present_state = in3;
                     ir_out  : #40 present_state = out3;
-                endcase = add5;
+                endcase
             end
             //Add instruction
             add3    : #40 present_state = add4;

@@ -20,11 +20,11 @@ module tb_minisrc;
         );
 
     initial begin
-		clk = 0; reset = 1;
-        #2 clk = 1;
-        #2 clk = 0; reset = 0;
-        #2 clk = 1;
-		forever #2 clk = ~clk;
+		clock = 0; reset = 1;
+        #2 clock = 1;
+        #2 clock = 0; reset = 0;
+        #2 clock = 1;
+		forever #2 clock = ~clock;
 	end
 
 
