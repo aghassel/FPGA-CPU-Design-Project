@@ -3,7 +3,7 @@ module datapath (
     input run, clear,
     input clock, reset, stop,
     //Inport data from external device
-    input [31:0] InPortData,
+    input [31:0] InPortData
 );
 
 wire R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out;
