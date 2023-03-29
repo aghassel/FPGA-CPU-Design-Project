@@ -138,8 +138,8 @@ module ctrl_unit(
 	always @(posedge clk, posedge reset) begin
 
         if (reset) begin    //reset the processor
-            #40 present_state = reset_state;
-            #40 prev_state = fetch0;
+            #20 present_state = reset_state;
+            #20 prev_state = fetch0;
             present_state = halt;
         end else if (stop) begin
             prev_state = present_state;
