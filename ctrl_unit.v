@@ -304,7 +304,16 @@ module ctrl_unit(
             out3    : #40 present_state = fetch0;
 
             //If restart, go to halt
-            restart : #40 present_state = halt;
+            restart : begin
+                prev_state = fetch0;
+                present_state = halt;
+            end
+
+            //If halt, wait for 
+            halt : begin
+                if (~stop) present_state = prev_state;
+                else present_state = halt;
+            end
 		endcase
 	end
     
@@ -529,6 +538,19 @@ module ctrl_unit(
             nop3: begin
                 #10 opcode = alu_nop;
             end
+
+            //If halted, show that not running
+            halt: begin
+                run = 0;
+                clear = 0;
+            end
+
+            //If in reset, show not running and set clear high
+            reset: begin
+                run = 0;
+                #5 clear = 1;
+            end
+
     endcase
 end
 
