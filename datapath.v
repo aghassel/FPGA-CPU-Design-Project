@@ -90,12 +90,12 @@ ctrl_unit Control_unit (
 
 
 regR0 R0 (BAout, clr, clk, R0in, BusMuxOut, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
-reg32bit #(32'd5) R1 (clr, clk, R1in, BusMuxOut, BusMuxIn_R1);
-reg32bit #(32'd10) R2 (clr, clk, R2in, BusMuxOut, BusMuxIn_R2);    
-reg32bit #(32'd5) R3 (clr, clk, R3in, BusMuxOut, BusMuxIn_R3);  
-reg32bit #(32'h67) R4 (clr, clk, R4in, BusMuxOut, BusMuxIn_R4);  
+reg32bit R2 (clr, clk, R2in, BusMuxOut, BusMuxIn_R2);    
+reg32bit R3 (clr, clk, R3in, BusMuxOut, BusMuxIn_R3);  
+reg32bit R1 (clr, clk, R1in, BusMuxOut, BusMuxIn_R1);
+reg32bit R4 (clr, clk, R4in, BusMuxOut, BusMuxIn_R4);  
 reg32bit R5 (clr, clk, R5in, BusMuxOut, BusMuxIn_R5);  
-reg32bit #(32'd1) R6 (clr, clk, R6in, BusMuxOut, BusMuxIn_R6);  
+reg32bit R6 (clr, clk, R6in, BusMuxOut, BusMuxIn_R6);  
 reg32bit R7 (clr, clk, R7in, BusMuxOut, BusMuxIn_R7);  
 reg32bit R8 (clr, clk, R8in, BusMuxOut, BusMuxIn_R8);  
 reg32bit R9 (clr, clk, R9in, BusMuxOut, BusMuxIn_R9);  
@@ -106,10 +106,10 @@ reg32bit R13 (clr, clk, R13in, BusMuxOut, BusMuxIn_R13);
 reg32bit R14 (clr, clk, R14in, BusMuxOut,  BusMuxIn_R14);  
 reg32bit R15 (clr, clk, R15in, BusMuxOut,  BusMuxIn_R15); 
 
-reg32bit #(32'd100) HI (clr, clk, HIin, BusMuxOut, BusMuxIn_HI); 
-reg32bit #(32'd10) LO (clr, clk, LOin, BusMuxOut, BusMuxIn_LO);
-reg32bit #(32'd100) ZHigh (clr, clk, Zin, CRegOut[63:32], BusMuxIn_Zhigh);
-reg32bit #(32'd75) ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
+reg32bit HI (clr, clk, HIin, BusMuxOut, BusMuxIn_HI); 
+reg32bit LO (clr, clk, LOin, BusMuxOut, BusMuxIn_LO);
+reg32bit ZHigh (clr, clk, Zin, CRegOut[63:32], BusMuxIn_Zhigh);
+reg32bit ZLow (clr, clk, Zin, CRegOut[31:0], BusMuxIn_Zlow);
 
 
 //PC reg initialization, using specific incPC input to increment PC by 1 each time set to high
