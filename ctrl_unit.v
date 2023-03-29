@@ -21,6 +21,7 @@ module ctrl_unit(
     output reg MDRout, Cout, InPortOut, PCout, 
     output reg [4:0] alu_opcode,
 );
+    assign clk = clock;
 
     //Control unit states
     parameter   reset_state = 8'b00000000,
@@ -131,18 +132,20 @@ module ctrl_unit(
                 ir_out  = 5'b10111;
 
     reg [7:0] prev_state;
-    reg [7:0] present_state = reset_state;
+    reg [7:0] present_state = halt;
 	
-	initial begin
-		clk = 0;
-		forever #2 clk = ~clk;
-	end
+	
 	
 	always @(posedge clk, posedge reset) begin
 
         if (reset) begin    //reset the processor
             present_state = reset_state;
         end 
+
+        if (halt) begin
+            prev_state = present_state;
+            present_state = halt;
+        end
         
 		case (present_state)
             fetch0 : #40 present_state = fetch1;
@@ -311,7 +314,7 @@ module ctrl_unit(
 
             //If halt, wait for 
             halt : begin
-                if (~stop) present_state = prev_state;
+                if (!stop) present_state = prev_state;
                 else present_state = halt;
             end
 		endcase
