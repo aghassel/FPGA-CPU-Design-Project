@@ -1,11 +1,14 @@
 module CONN_FF (
-    input [1:0] IRin,
+    input [31:0] IRdata,
     input [31:0] BusMuxOut,
     input wire CONN_in,
     output reg CONN_out
 );
+    wire [1:0] IRin;
     wire nor_bus, msb_bus;
 	 reg D;
+
+    assign IRin = IRdata[20:19];
 
     //Nor gate all bus inputs
     assign nor_bus = BusMuxOut == 0 ? 1'b1 : 1'b0;

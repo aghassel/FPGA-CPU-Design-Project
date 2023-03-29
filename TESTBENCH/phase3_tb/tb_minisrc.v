@@ -13,19 +13,15 @@ module tb_minisrc;
     datapath dp (
         .run(run),
         .clear(clear),
-        .clock(clock),
+        .clk(clock),
         .reset(reset),
         .stop(stop),
         .InPortData(InPortData)
         );
 
     initial begin
-		clock = 0; reset = 1;
-        #2 clock = 1;
-        #2 clock = 0; reset = 0;
-        #2 clock = 1;
-		forever #2 clock = ~clock;
+		#2 clock = 1; reset = 1;
+        #2 reset = 0;
+		#2 forever clock = ~clock;
 	end
-
-
 endmodule

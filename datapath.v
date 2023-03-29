@@ -1,14 +1,18 @@
 module datapath (
     //Test Bench inputs/outputs but goes through datapath to control unit
     input run, clear,
-    input clock, reset, stop,
+    input clk, reset, stop,
     //Inport data from external device
     input [31:0] InPortData
 );
 
 wire R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out;
 wire R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in;
-wire Control_unit_in;
+wire branch_flag;
+//control unit wires
+wire PCout, clr, read, write, BAout, Rin, Rout, Gra, Grb, Grc, CONN_in, MARin, MDRin, HIin, LOin, Yin,
+        Zin, PCin, IRin, incPC, InPortIn, OutPortIn, HIout, LOout, ZLowOut, ZHighOut, MDRout, Cout, InPortOut;
+wire [4:0] opcode;
 
 wire [31:0] BusMuxIn_R0, 
             BusMuxIn_R1, 
@@ -27,7 +31,8 @@ wire [31:0] BusMuxIn_R0,
             BusMuxIn_R14, 
             BusMuxIn_R15;
 
-wire [31:0] BusMuxIn_HI, 
+wire [31:0] IRdata,
+            BusMuxIn_HI, 
             BusMuxIn_LO, 
             BusMuxIn_Zhigh, 
             BusMuxIn_Zlow, 
@@ -46,17 +51,16 @@ wire [63:0] CRegOut;
 
 
 //Control unit initialization
-ctrl_unit Control_unit (
+ctrl_unit cu (
     //Test Bench inputs/outputs but goes through datapath
     .run(run), 
     .clear(clear),
-    .clock(clock), 
+    .clk(clk), 
     .reset(reset), 
     .stop(stop),
     //Datapath inputs/outputs
     .IRdata(IRdata),
     .clr(clr),
-    .clk(clk),
     .read(read),
     .write(write),
     .BAout(BAout),
@@ -85,7 +89,7 @@ ctrl_unit Control_unit (
     .Cout(Cout),
     .InPortOut(InPortOut),
     .PCout(PCout), 
-    .alu_opcode(alu_opcode),
+    .alu_opcode(opcode)
 );
 
 
@@ -136,10 +140,10 @@ ram myRam (.clk(clk), .read(read), .write(write), .MARout(MARout[8:0]), .D(BusMu
 
 //Control Branch logic
 CONN_FF myConn_ff (
-    .IRin(IRdata[20:19]),
+    .IRdata(IRdata),
     .BusMuxOut(BusMuxOut),
     .CONN_in(CONN_in),
-    .CONN_out(Control_unit_in)
+    .CONN_out(branch_flag)
 );
 
 
@@ -247,7 +251,7 @@ alu_test myAlu(
 	.clk(clk),
 	.clr(clr), 
     .incPC(incPC),
-    .CONN_out(Control_unit_in),
+    .CONN_out(branch_flag),
 	.B(BusMuxOut),
     .A(Yout),
 	.opcode(opcode),
