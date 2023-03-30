@@ -18,7 +18,8 @@ module ctrl_unit(
     output reg InPortIn, OutPortIn, 
     output reg HIout, LOout, ZLowOut, ZHighOut,
     output reg MDRout, Cout, InPortOut, PCout, 
-    output reg [4:0] alu_opcode
+    output reg [4:0] alu_opcode,
+    output reg jal_flag
 );
     
 
@@ -69,7 +70,7 @@ module ctrl_unit(
                 //Move reg to PC state
                 jr3 = 8'b01000100, 
                 //Move PC to reg state
-                jal3 = 8'b01000101, jal4 = 8'b10000001, jal5 = 8'b10000010,
+                jal3 = 8'b01000101, jal4 = 8'b10000001,
                 //Move HI to reg state
 			    mfhi3 = 8'b01000111, 
                 //Move LO to reg state
@@ -293,8 +294,7 @@ module ctrl_unit(
 
                 //Jump and link instructions
                 jal3    : #40 present_state = jal4;
-                jal4    : #40 present_state = jal5;
-                jal5    : #40 present_state = fetch0;
+                jal4    : #40 present_state = fetch0;
 
                 //Move from HI instructions
                 mfhi3   : #40 present_state = fetch0;
@@ -332,7 +332,6 @@ module ctrl_unit(
                 InPortIn = 0; OutPortIn = 0; 
                 HIout = 0; LOout = 0; ZLowOut = 0; ZHighOut = 0;
                 MDRout = 0; Cout = 0; InPortOut = 0; PCout = 0; 
-                #5 clr = 0;
 			end
                       
             fetch0: begin
@@ -497,13 +496,13 @@ module ctrl_unit(
             end
 
             //Jump register and Jump and Link Register instructions
-            jr3 : begin
+            jr3, jal4 : begin
                 #10 Gra = 1; Rout = 1; PCin = 1;  
                 #10 Gra = 0; Rout = 0; PCin = 0;  
             end
             jal3 : begin
-                #10 Gra = 1; Rin = 1; PCout = 1;  
-                #10 Gra = 0; Rin = 0; PCout = 0;  
+                #10 PCout = 1; jal_flag = 1; 
+                #10 PCout = 0; jal_flag = 0; 
             end
 
             //Input Output instruction states
@@ -534,7 +533,7 @@ module ctrl_unit(
             //If halted, show that not running
             halt: begin
                 run = 0;
-                clear = 1;
+                clear = 0;
             end
     endcase
 end

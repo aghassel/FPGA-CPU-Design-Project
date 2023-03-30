@@ -1,6 +1,6 @@
 module datapath (
     //Test Bench inputs/outputs but goes through datapath to control unit
-    input run,
+    output run,
     input wire clk, reset, stop,
     //Inport data from external device
     input [31:0] InPortData
@@ -12,7 +12,7 @@ wire R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10ou
 wire R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in;
 wire branch_flag;
 //control unit wires
-wire PCout, read, write, BAout, Rin, Rout, Gra, Grb, Grc, CONN_in, MARin, MDRin, HIin, LOin, Yin,
+wire PCout, read, write, BAout, Rin, Rout, Gra, Grb, Grc, CONN_in, MARin, MDRin, HIin, LOin, Yin, jal_flag, R15jal,
         Zin, PCin, IRin, incPC, InPortIn, OutPortIn, HIout, LOout, ZLowOut, ZHighOut, MDRout, Cout, InPortOut;
 wire [4:0] opcode;
 
@@ -90,9 +90,11 @@ ctrl_unit cu (
     .Cout(Cout),
     .InPortOut(InPortOut),
     .PCout(PCout), 
-    .alu_opcode(opcode)
+    .alu_opcode(opcode),
+    .jal_flag(jal_flag)
 );
 
+assign R15jal = (R15in | jal_flag);
 
 regR0 R0 (BAout, clr, clk, R0in, BusMuxOut, BusMuxIn_R0); //input signal is always 0 for R0 (special reg)
 reg32bit R2 (clr, clk, R2in, BusMuxOut, BusMuxIn_R2);    
@@ -109,7 +111,7 @@ reg32bit R11 (clr, clk, R11in, BusMuxOut, BusMuxIn_R11);
 reg32bit R12 (clr, clk, R12in, BusMuxOut, BusMuxIn_R12);  
 reg32bit R13 (clr, clk, R13in, BusMuxOut, BusMuxIn_R13);  
 reg32bit R14 (clr, clk, R14in, BusMuxOut,  BusMuxIn_R14);  
-reg32bit R15 (clr, clk, R15in, BusMuxOut,  BusMuxIn_R15); 
+reg32bit R15 (clr, clk, R15jal, BusMuxOut,  BusMuxIn_R15); 
 
 reg32bit HI (clr, clk, HIin, BusMuxOut, BusMuxIn_HI); 
 reg32bit LO (clr, clk, LOin, BusMuxOut, BusMuxIn_LO);
