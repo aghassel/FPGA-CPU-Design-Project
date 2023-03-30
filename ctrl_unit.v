@@ -21,7 +21,9 @@ module ctrl_unit(
     output reg [4:0] alu_opcode,
     output reg jal_flag
 );
-    
+    wire [4:0] ir_op;
+
+    assign ir_op = IRdata[31:27];
 
     //Control unit states
     parameter   reset_state = 8'b00000000, 
@@ -129,7 +131,9 @@ module ctrl_unit(
                 ir_mfhi = 5'b11000,
                 ir_mflo = 5'b11001,
                 ir_in   = 5'b10110,
-                ir_out  = 5'b10111;
+                ir_out  = 5'b10111,
+                ir_nop  = 5'b11010,
+                ir_halt = 5'b11011;
 
     reg [7:0] prev_state = fetch0;
     reg [7:0] present_state = halt;
@@ -137,11 +141,11 @@ module ctrl_unit(
 	 
 
 	always @(posedge clk, posedge reset) begin
-
+            
         if (reset) begin    //reset the processor
-            present_state = reset_state;
-            prev_state = fetch0;
-            present_state = halt;
+            #5 present_state = reset_state;
+            #5 prev_state = fetch0;
+            #5 present_state = halt;
         end else if (stop) begin
             prev_state = present_state;
             present_state = halt;
@@ -153,33 +157,36 @@ module ctrl_unit(
                 fetch0 : #40 present_state = fetch1;
                 fetch1 : #40 present_state = fetch2;
                 fetch2 : begin
-                    case (IRdata[31:27])
-                        ir_add  : #40 present_state = add3;
-                        ir_sub  : #40 present_state = sub3;
-                        ir_mul  : #40 present_state = mul3;
-                        ir_div  : #40 present_state = div3;
-                        ir_shl  : #40 present_state = shl3;
-                        ir_shr  : #40 present_state = shr3;
-                        ir_shra : #40 present_state = shra3;
-                        ir_rol  : #40 present_state = rol3;
-                        ir_ror  : #40 present_state = ror3;
-                        ir_and  : #40 present_state = and3;
-                        ir_or   : #40 present_state = or3;
-                        ir_neg  : #40 present_state = neg3;
-                        ir_not  : #40 present_state = not3;
-                        ir_ld   : #40 present_state = ld3;
-                        ir_ldi  : #40 present_state = ldi3;
-                        ir_st   : #40 present_state = st3;
-                        ir_addi : #40 present_state = addi3;
-                        ir_andi : #40 present_state = andi3;
-                        ir_ori  : #40 present_state = ori3;
-                        ir_br   : #40 present_state = br3;
-                        ir_jr   : #40 present_state = jr3;
-                        ir_jal  : #40 present_state = jal3;
-                        ir_mfhi : #40 present_state = mfhi3;
-                        ir_mflo : #40 present_state = mflo3;
-                        ir_in   : #40 present_state = in3;
-                        ir_out  : #40 present_state = out3;
+                        #40
+                        case (ir_op)
+                        ir_add  :  present_state = add3;
+                        ir_sub  :  present_state = sub3;
+                        ir_mul  :  present_state = mul3;
+                        ir_div  :  present_state = div3;
+                        ir_shl  :  present_state = shl3;
+                        ir_shr  :  present_state = shr3;
+                        ir_shra :  present_state = shra3;
+                        ir_rol  :  present_state = rol3;
+                        ir_ror  :  present_state = ror3;
+                        ir_and  :  present_state = and3;
+                        ir_or   :  present_state = or3;
+                        ir_neg  :  present_state = neg3;
+                        ir_not  :  present_state = not3;
+                        ir_ld   :  present_state = ld3;
+                        ir_ldi  :  present_state = ldi3;
+                        ir_st   :  present_state = st3;
+                        ir_addi :  present_state = addi3;
+                        ir_andi :  present_state = andi3;
+                        ir_ori  :  present_state = ori3;
+                        ir_br   :  present_state = br3;
+                        ir_jr   :  present_state = jr3;
+                        ir_jal  :  present_state = jal3;
+                        ir_mfhi :  present_state = mfhi3;
+                        ir_mflo :  present_state = mflo3;
+                        ir_in   :  present_state = in3;
+                        ir_out  :  present_state = out3;
+                        ir_nop  :  present_state = fetch0;
+                        ir_halt :  present_state = halt;
                     endcase
                 end
                 //Add instruction
@@ -330,6 +337,7 @@ module ctrl_unit(
                 Yin = 0; Zin = 0;
                 PCin = 0; IRin = 0; incPC = 0; 
                 InPortIn = 0; OutPortIn = 0; 
+                jal_flag = 0;
                 HIout = 0; LOout = 0; ZLowOut = 0; ZHighOut = 0;
                 MDRout = 0; Cout = 0; InPortOut = 0; PCout = 0; 
 			end
@@ -344,17 +352,17 @@ module ctrl_unit(
 			end
             fetch2: begin
 				#10 MDRout = 1; IRin = 1;
-				#15 MDRout = 0; IRin = 0; 
+				#10 MDRout = 0; IRin = 0; 
 			end
 
             //Alu instruction states
             add3, sub3, and3, or3, shl3, shr3, shra3, ror3, rol3, addi3, andi3, ori3, neg3, not3: begin
-                #10 Grb = 1; Yin = 1;
-                #15 Grb = 0; Yin = 0;
+                #10 Grb = 1; Rout = 1; Yin = 1;
+                #15 Grb = 0; Rout = 0; Yin = 0;
             end
             mul3, div3: begin
-                #10 Gra = 1; Yin = 1; 
-                #15 Gra = 0; Yin = 0; 
+                #10 Gra = 1; Rout = 1; Yin = 1; 
+                #15 Gra = 0; Rout = 0; Yin = 0; 
             end
             add4 : begin
                 #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_addop;
@@ -496,13 +504,17 @@ module ctrl_unit(
             end
 
             //Jump register and Jump and Link Register instructions
-            jr3, jal4 : begin
+            jr3 : begin
                 #10 Gra = 1; Rout = 1; PCin = 1;  
                 #10 Gra = 0; Rout = 0; PCin = 0;  
             end
             jal3 : begin
                 #10 PCout = 1; jal_flag = 1; 
                 #10 PCout = 0; jal_flag = 0; 
+            end
+            jal4: begin
+                #10 PCin = 1; Gra = 1; Rout = 1;
+                #10 PCin = 0; Gra = 0; Rout = 0;
             end
 
             //Input Output instruction states

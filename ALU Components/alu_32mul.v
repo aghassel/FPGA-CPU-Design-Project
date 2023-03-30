@@ -31,7 +31,6 @@ always @(*) begin
             3'b100: temp = temp - (multiplicand_reg + multiplicand_reg);
             // -1 x M
             3'b101, 3'b110: temp = temp - multiplicand_reg;
-				default: temp = 64'bx;
         endcase
 
         multiplicand_reg = multiplicand_reg <<< 2;
