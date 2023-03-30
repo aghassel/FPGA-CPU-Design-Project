@@ -7,7 +7,7 @@ module ctrl_unit(
     output reg run, clear,
     //Datapath inputs/outputs
     input [31:0] IRdata,
-    output reg clr,
+    output reg clr, //we have two clears
     output reg read, write,
     output reg BAout, Rin, Rout,
     output reg Gra, Grb, Grc,
@@ -321,6 +321,7 @@ module ctrl_unit(
 			reset_state : begin  
                 run = 1; clear = 1;
                 #5 clr = 1;
+                read = 0; write = 0;
                 Gra = 0; Grb = 0; Grc = 0; Rin = 0;              
 				BAout = 0; Rin = 0; Rout = 0;
                 CONN_in = 0;
