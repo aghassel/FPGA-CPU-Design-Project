@@ -332,7 +332,6 @@ module ctrl_unit(
                 InPortIn = 0; OutPortIn = 0; 
                 HIout = 0; LOout = 0; ZLowOut = 0; ZHighOut = 0;
                 MDRout = 0; Cout = 0; InPortOut = 0; PCout = 0; 
-                read = 0; write = 0;
                 #5 clr = 0;
 			end
                       
