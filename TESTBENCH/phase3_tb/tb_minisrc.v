@@ -4,20 +4,20 @@
 
 module tb_minisrc;
     //Inputs
-    reg run, clear, clock; 
-    reg [31:0] InPortData;
+    reg run, clock; 
+    wire [31:0] InPortData;
     //Outputs
     reg reset, stop; 
-
+    //wire clear;
 
     datapath dp (
-        .run(run),
-        .clear(clear),
-        .clk(clock),
-        .reset(reset),
-        .stop(stop),
-        .InPortData(InPortData)
-        );
+    .run(run),
+    .clk(clock),
+    .reset(reset),
+    .stop(stop),
+    //.clr(clear),
+    .InPortData(InPortData)
+);
 
     initial begin
 		#2 clock = 0; reset = 1;

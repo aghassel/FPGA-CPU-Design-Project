@@ -1,16 +1,18 @@
 module datapath (
     //Test Bench inputs/outputs but goes through datapath to control unit
-    input run, clear,
-    input clk, reset, stop,
+    input run,
+    input wire clk, reset, stop,
     //Inport data from external device
     input [31:0] InPortData
 );
+
+wire clr;
 
 wire R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out;
 wire R0in, R1in, R2in, R3in, R4in, R5in, R6in, R7in, R8in, R9in, R10in, R11in, R12in, R13in, R14in, R15in;
 wire branch_flag;
 //control unit wires
-wire PCout, clr, read, write, BAout, Rin, Rout, Gra, Grb, Grc, CONN_in, MARin, MDRin, HIin, LOin, Yin,
+wire PCout, read, write, BAout, Rin, Rout, Gra, Grb, Grc, CONN_in, MARin, MDRin, HIin, LOin, Yin,
         Zin, PCin, IRin, incPC, InPortIn, OutPortIn, HIout, LOout, ZLowOut, ZHighOut, MDRout, Cout, InPortOut;
 wire [4:0] opcode;
 
@@ -54,13 +56,12 @@ wire [63:0] CRegOut;
 ctrl_unit cu (
     //Test Bench inputs/outputs but goes through datapath
     .run(run), 
-    .clear(clear),
+    .clear(clr),
     .clk(clk), 
     .reset(reset), 
     .stop(stop),
     //Datapath inputs/outputs
     .IRdata(IRdata),
-    .clr(clr),
     .read(read),
     .write(write),
     .BAout(BAout),

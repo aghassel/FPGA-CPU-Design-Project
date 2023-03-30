@@ -7,7 +7,6 @@ module ctrl_unit(
     output reg run, clear,
     //Datapath inputs/outputs
     input [31:0] IRdata,
-    output reg clr, //we have two clears
     output reg read, write,
     output reg BAout, Rin, Rout,
     output reg Gra, Grb, Grc,
@@ -139,8 +138,8 @@ module ctrl_unit(
 	always @(posedge clk, posedge reset) begin
 
         if (reset) begin    //reset the processor
-            #20 present_state = reset_state;
-            #20 prev_state = fetch0;
+            present_state = reset_state;
+            prev_state = fetch0;
             present_state = halt;
         end else if (stop) begin
             prev_state = present_state;
@@ -320,7 +319,6 @@ module ctrl_unit(
 		case (present_state)
 			reset_state : begin  
                 run = 1; clear = 1;
-                #5 clr = 1;
                 read = 0; write = 0;
                 Gra = 0; Grb = 0; Grc = 0; Rin = 0;              
 				BAout = 0; Rin = 0; Rout = 0;
@@ -332,7 +330,7 @@ module ctrl_unit(
                 InPortIn = 0; OutPortIn = 0; 
                 HIout = 0; LOout = 0; ZLowOut = 0; ZHighOut = 0;
                 MDRout = 0; Cout = 0; InPortOut = 0; PCout = 0; 
-                #5 clr = 0;
+                #5 clear = 0;
 			end
                       
             fetch0: begin
@@ -534,7 +532,7 @@ module ctrl_unit(
             //If halted, show that not running
             halt: begin
                 run = 0;
-                clear = 0;
+                clear = 1;
             end
     endcase
 end
