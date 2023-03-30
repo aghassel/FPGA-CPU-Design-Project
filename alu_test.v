@@ -58,11 +58,11 @@ module alu_test #(parameter wordSize = 32)(
                 C [63:32] <= 32'd0;
             end
             ror: begin
-                C [31:0] <= (A >> B) | (A << ~B);
+                C [31:0] <= (A >> B) | (A <<(32 - B));
                 C [63:32] <= 32'd0;
             end
             rol: begin
-                C [31:0] <= (A << B) | (A >> ~B);
+                C [31:0] <= (A << B) | (A >>(32 - B));
                 C [63:32] <= 32'd0;
             end
             log_and: begin

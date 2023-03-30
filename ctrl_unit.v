@@ -69,7 +69,7 @@ module ctrl_unit(
                 //Move reg to PC state
                 jr3 = 8'b01000100, 
                 //Move PC to reg state
-                jal3 = 8'b01000101, 
+                jal3 = 8'b01000101, jal4 = 8'b10000001, jal5 = 8'b10000010,
                 //Move HI to reg state
 			    mfhi3 = 8'b01000111, 
                 //Move LO to reg state
@@ -292,7 +292,9 @@ module ctrl_unit(
                 jr3     : #40 present_state = fetch0;
 
                 //Jump and link instructions
-                jal3    : #40 present_state = fetch0;
+                jal3    : #40 present_state = jal4;
+                jal4    : #40 present_state = jal5;
+                jal5    : #40 present_state = fetch0;
 
                 //Move from HI instructions
                 mfhi3   : #40 present_state = fetch0;
@@ -330,7 +332,8 @@ module ctrl_unit(
                 InPortIn = 0; OutPortIn = 0; 
                 HIout = 0; LOout = 0; ZLowOut = 0; ZHighOut = 0;
                 MDRout = 0; Cout = 0; InPortOut = 0; PCout = 0; 
-                #5 clear = 0;
+                read = 0; write = 0;
+                #5 clr = 0;
 			end
                       
             fetch0: begin
