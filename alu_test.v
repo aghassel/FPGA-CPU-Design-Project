@@ -53,7 +53,7 @@ module alu_test #(parameter wordSize = 32)(
                 C [63:32] <= 32'd0;
             end
             shra: begin
-                C [31:0] <= A >>> B;
+                C [31:0] <= $signed(A) >>> $signed(B);
                 //C [31:0] <= $signed(A >>> B);
                 C [63:32] <= 32'd0;
             end

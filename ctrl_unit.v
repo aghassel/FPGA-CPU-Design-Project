@@ -39,6 +39,8 @@ module ctrl_unit(
                 div3 = 8'b00001110, div4 = 8'b00001111,div5 = 8'b00010000, div6 = 8'b00010001, 
                 //Or states
                 or3 = 8'b00010010, or4 = 8'b00010011, or5 = 8'b00010100, 
+                //Xor states
+                xor3 = 8'b10010101, xor4 = 8'b10010110, xor5 = 8'b10011111,
                 //And states
                 and3 = 8'b00010101, and4 = 8'b00010110, and5 = 8'b00010111, 
                 //Shift left states
@@ -117,6 +119,7 @@ module ctrl_unit(
                 ir_ror  = 5'b01010,
                 ir_and  = 5'b00101,
                 ir_or   = 5'b00110,
+                ir_xor  = 5'b11110, //Xor opcode is 11110
                 ir_neg  = 5'b10001,
                 ir_not  = 5'b10010,
                 ir_ld   = 5'b00000,
@@ -135,193 +138,201 @@ module ctrl_unit(
                 ir_nop  = 5'b11010,
                 ir_halt = 5'b11011;
 
-    reg [7:0] prev_state = fetch0;
+
     reg [7:0] present_state = halt;
 	 
 	 
 
-	always @(posedge clk, posedge reset) begin
+	always @(posedge clk, posedge reset, posedge stop) begin
             
         if (reset) begin    //reset the processor
             #5 present_state = reset_state;
-            #5 prev_state = fetch0;
-            #5 present_state = halt;
-        end else if (stop) begin
-            prev_state = present_state;
+            #10 present_state = fetch0;
+        end 
+        
+        if (stop) begin
             present_state = halt;
-        end else if (!stop) begin  
-
-            if (present_state == halt) present_state = prev_state;
-
-            case (present_state)
-                fetch0 : #40 present_state = fetch1;
-                fetch1 : #40 present_state = fetch2;
-                fetch2 : begin
-                        #40
-                        case (ir_op)
-                        ir_add  :  present_state = add3;
-                        ir_sub  :  present_state = sub3;
-                        ir_mul  :  present_state = mul3;
-                        ir_div  :  present_state = div3;
-                        ir_shl  :  present_state = shl3;
-                        ir_shr  :  present_state = shr3;
-                        ir_shra :  present_state = shra3;
-                        ir_rol  :  present_state = rol3;
-                        ir_ror  :  present_state = ror3;
-                        ir_and  :  present_state = and3;
-                        ir_or   :  present_state = or3;
-                        ir_neg  :  present_state = neg3;
-                        ir_not  :  present_state = not3;
-                        ir_ld   :  present_state = ld3;
-                        ir_ldi  :  present_state = ldi3;
-                        ir_st   :  present_state = st3;
-                        ir_addi :  present_state = addi3;
-                        ir_andi :  present_state = andi3;
-                        ir_ori  :  present_state = ori3;
-                        ir_br   :  present_state = br3;
-                        ir_jr   :  present_state = jr3;
-                        ir_jal  :  present_state = jal3;
-                        ir_mfhi :  present_state = mfhi3;
-                        ir_mflo :  present_state = mflo3;
-                        ir_in   :  present_state = in3;
-                        ir_out  :  present_state = out3;
-                        ir_nop  :  present_state = fetch0;
-                        ir_halt :  present_state = halt;
-                    endcase
-                end
-                //Add instruction
-                add3    : #40 present_state = add4;
-                add4    : #40 present_state = add5;
-                add5    : #40 present_state = fetch0;
-
-                //Sub instruction
-                sub3    : #40 present_state = sub4;
-                sub4    : #40 present_state = sub5;
-                sub5    : #40 present_state = fetch0;
-                
-                //Mul instruction
-                mul3    : #40 present_state = mul4;
-                mul4    : #40 present_state = mul5;
-                mul5    : #40 present_state = mul6;
-                mul6    : #40 present_state = fetch0;
-                
-                //Div instruction
-                div3    : #40 present_state = div4;
-                div4    : #40 present_state = div5;
-                div5    : #40 present_state = div6;
-                div6    : #40 present_state = fetch0;
-
-                //Or instruction
-                or3     : #40 present_state = or4;
-                or4     : #40 present_state = or5;
-                or5     : #40 present_state = fetch0;
-
-                //And instruction
-                and3    : #40 present_state = and4;
-                and4    : #40 present_state = and5;
-                and5    : #40 present_state = fetch0;
-                
-                //Shift left instrcutions
-                shl3    : #40 present_state = shl4;
-                shl4    : #40 present_state = shl5;
-                shl5    : #40 present_state = fetch0;
-                
-                //Shift right instructions
-                shr3    : #40 present_state = shr4;
-                shr4    : #40 present_state = shr5;
-                shr5    : #40 present_state = fetch0;
-
-                //Shift right arithmatic instructions
-                shra3   : #40 present_state = shra4;
-                shra4   : #40 present_state = shra5;
-                shra5   : #40 present_state = fetch0;
-                
-                //Rotate left instructions
-                rol3    : #40 present_state = rol4;
-                rol4    : #40 present_state = rol5;
-                rol5    : #40 present_state = fetch0;
-
-                //Rotate right instructions
-                ror3    : #40 present_state = ror4;
-                ror4    : #40 present_state = ror5;
-                ror5    : #40 present_state = fetch0;
-
-                //Negate instructions
-                neg3    : #40 present_state = neg4;
-                neg4    : #40 present_state = neg5;
-                neg5    : #40 present_state = fetch0;
-
-                //Not instructions
-                not3    : #40 present_state = not4;
-                not4    : #40 present_state = not5;
-                not5    : #40 present_state = fetch0;
-
-                //Load instructions
-                ld3     : #40 present_state = ld4;
-                ld4     : #40 present_state = ld5;
-                ld5     : #40 present_state = ld6;
-                ld6     : #40 present_state = ld7;
-                ld7     : #40 present_state = fetch0;
-
-                //Load immediate instructions
-                ldi3    : #40 present_state = ldi4;
-                ldi4    : #40 present_state = ldi5;
-                ldi5    : #40 present_state = fetch0;
-
-                //Store instructions
-                st3     : #40 present_state = st4;
-                st4     : #40 present_state = st5;
-                st5     : #40 present_state = st6;
-                st6     : #40 present_state = st7;
-                st7     : #40 present_state = fetch0;
-
-                //Add immediate instructions
-                addi3   : #40 present_state = addi4;
-                addi4   : #40 present_state = addi5;
-                addi5   : #40 present_state = fetch0;
-
-                //And immediate instructions
-                andi3   : #40 present_state = andi4;
-                andi4   : #40 present_state = andi5;
-                andi5   : #40 present_state = fetch0;
-                
-                //Or immediate instructions
-                ori3    : #40 present_state = ori4;
-                ori4    : #40 present_state = ori5;
-                ori5    : #40 present_state = fetch0;
-                
-                //Branch instructions
-                br3     : #40 present_state = br4;
-                br4     : #40 present_state = br5;
-                br5     : #40 present_state = br6;
-                br6     : #40 present_state = fetch0;
-                
-                //Jump register instructions
-                jr3     : #40 present_state = fetch0;
-
-                //Jump and link instructions
-                jal3    : #40 present_state = jal4;
-                jal4    : #40 present_state = fetch0;
-
-                //Move from HI instructions
-                mfhi3   : #40 present_state = fetch0;
-
-                //Move from LO instructions
-                mflo3   : #40 present_state = fetch0;
-
-                //Input instructions
-                in3     : #40 present_state = fetch0;
-                
-                //Output instructions
-                out3    : #40 present_state = fetch0;
-
-                //If restart, go to halt
-                reset_state : begin
-                    prev_state = fetch0;
-                    #40 present_state = halt;
-                end
-            endcase
         end
+        
+        case (present_state)
+            fetch0 : #40 present_state = fetch1;
+            fetch1 : #40 present_state = fetch2;
+            fetch2 : begin
+                    #40
+                    case (ir_op)
+                    ir_add  :  present_state = add3;
+                    ir_sub  :  present_state = sub3;
+                    ir_mul  :  present_state = mul3;
+                    ir_div  :  present_state = div3;
+                    ir_shl  :  present_state = shl3;
+                    ir_shr  :  present_state = shr3;
+                    ir_shra :  present_state = shra3;
+                    ir_rol  :  present_state = rol3;
+                    ir_ror  :  present_state = ror3;
+                    ir_and  :  present_state = and3;
+                    ir_or   :  present_state = or3;
+                    ir_xor  :  present_state = xor3;
+                    ir_neg  :  present_state = neg3;
+                    ir_not  :  present_state = not3;
+                    ir_ld   :  present_state = ld3;
+                    ir_ldi  :  present_state = ldi3;
+                    ir_st   :  present_state = st3;
+                    ir_addi :  present_state = addi3;
+                    ir_andi :  present_state = andi3;
+                    ir_ori  :  present_state = ori3;
+                    ir_br   :  present_state = br3;
+                    ir_jr   :  present_state = jr3;
+                    ir_jal  :  present_state = jal3;
+                    ir_mfhi :  present_state = mfhi3;
+                    ir_mflo :  present_state = mflo3;
+                    ir_in   :  present_state = in3;
+                    ir_out  :  present_state = out3;
+                    ir_nop  :  present_state = fetch0;
+                    ir_halt :  present_state = halt;
+                endcase
+            end
+            //Add instruction
+            add3    : #40 present_state = add4;
+            add4    : #40 present_state = add5;
+            add5    : #40 present_state = fetch0;
+
+            //Sub instruction
+            sub3    : #40 present_state = sub4;
+            sub4    : #40 present_state = sub5;
+            sub5    : #40 present_state = fetch0;
+            
+            //Mul instruction
+            mul3    : #40 present_state = mul4;
+            mul4    : #40 present_state = mul5;
+            mul5    : #40 present_state = mul6;
+            mul6    : #40 present_state = fetch0;
+            
+            //Div instruction
+            div3    : #40 present_state = div4;
+            div4    : #40 present_state = div5;
+            div5    : #40 present_state = div6;
+            div6    : #40 present_state = fetch0;
+
+            //Or instruction
+            or3     : #40 present_state = or4;
+            or4     : #40 present_state = or5;
+            or5     : #40 present_state = fetch0;
+
+            //Xor instruction
+            xor3    : #40 present_state = xor4;
+            xor4    : #40 present_state = xor5;
+            xor5    : #40 present_state = fetch0;
+
+            //And instruction
+            and3    : #40 present_state = and4;
+            and4    : #40 present_state = and5;
+            and5    : #40 present_state = fetch0;
+            
+            //Shift left instrcutions
+            shl3    : #40 present_state = shl4;
+            shl4    : #40 present_state = shl5;
+            shl5    : #40 present_state = fetch0;
+            
+            //Shift right instructions
+            shr3    : #40 present_state = shr4;
+            shr4    : #40 present_state = shr5;
+            shr5    : #40 present_state = fetch0;
+
+            //Shift right arithmatic instructions
+            shra3   : #40 present_state = shra4;
+            shra4   : #40 present_state = shra5;
+            shra5   : #40 present_state = fetch0;
+            
+            //Rotate left instructions
+            rol3    : #40 present_state = rol4;
+            rol4    : #40 present_state = rol5;
+            rol5    : #40 present_state = fetch0;
+
+            //Rotate right instructions
+            ror3    : #40 present_state = ror4;
+            ror4    : #40 present_state = ror5;
+            ror5    : #40 present_state = fetch0;
+
+            //Negate instructions
+            neg3    : #40 present_state = neg4;
+            neg4    : #40 present_state = neg5;
+            neg5    : #40 present_state = fetch0;
+
+            //Not instructions
+            not3    : #40 present_state = not4;
+            not4    : #40 present_state = not5;
+            not5    : #40 present_state = fetch0;
+
+            //Load instructions
+            ld3     : #40 present_state = ld4;
+            ld4     : #40 present_state = ld5;
+            ld5     : #40 present_state = ld6;
+            ld6     : #40 present_state = ld7;
+            ld7     : #40 present_state = fetch0;
+
+            //Load immediate instructions
+            ldi3    : #40 present_state = ldi4;
+            ldi4    : #40 present_state = ldi5;
+            ldi5    : #40 present_state = fetch0;
+
+            //Store instructions
+            st3     : #40 present_state = st4;
+            st4     : #40 present_state = st5;
+            st5     : #40 present_state = st6;
+            st6     : #40 present_state = st7;
+            st7     : #40 present_state = fetch0;
+
+            //Add immediate instructions
+            addi3   : #40 present_state = addi4;
+            addi4   : #40 present_state = addi5;
+            addi5   : #40 present_state = fetch0;
+
+            //And immediate instructions
+            andi3   : #40 present_state = andi4;
+            andi4   : #40 present_state = andi5;
+            andi5   : #40 present_state = fetch0;
+            
+            //Or immediate instructions
+            ori3    : #40 present_state = ori4;
+            ori4    : #40 present_state = ori5;
+            ori5    : #40 present_state = fetch0;
+            
+            //Branch instructions
+            br3     : #40 present_state = br4;
+            br4     : #40 present_state = br5;
+            br5     : #40 present_state = br6;
+            br6     : #40 present_state = fetch0;
+            
+            //Jump register instructions
+            jr3     : #40 present_state = fetch0;
+
+            //Jump and link instructions
+            jal3    : #40 present_state = jal4;
+            jal4    : #40 present_state = fetch0;
+
+            //Move from HI instructions
+            mfhi3   : #40 present_state = fetch0;
+
+            //Move from LO instructions
+            mflo3   : #40 present_state = fetch0;
+
+            //Input instructions
+            in3     : #40 present_state = fetch0;
+            
+            //Output instructions
+            out3    : #40 present_state = fetch0;
+
+            //If restart, go to halt
+            reset_state : begin
+                #40 present_state = fetch0;
+            end
+
+            //halt state
+            halt : begin
+                present_state = halt;
+            end
+        endcase
+        
 	end
     
 	always @(present_state) begin
@@ -340,6 +351,7 @@ module ctrl_unit(
                 jal_flag = 0;
                 HIout = 0; LOout = 0; ZLowOut = 0; ZHighOut = 0;
                 MDRout = 0; Cout = 0; InPortOut = 0; PCout = 0; 
+                #3 clear = 0; run = 0;
 			end
                       
             fetch0: begin
@@ -356,7 +368,7 @@ module ctrl_unit(
 			end
 
             //Alu instruction states
-            add3, sub3, and3, or3, shl3, shr3, shra3, ror3, rol3, addi3, andi3, ori3, neg3, not3: begin
+            add3, sub3, and3, or3, shl3, shr3, shra3, ror3, rol3, addi3, andi3, ori3, neg3, not3, xor3: begin
                 #10 Grb = 1; Rout = 1; Yin = 1;
                 #15 Grb = 0; Rout = 0; Yin = 0;
             end
@@ -378,6 +390,10 @@ module ctrl_unit(
             end
             or4 : begin
                 #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_orop;
+                #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
+            end
+            xor4 : begin
+                #10 Zin = 1; Grc = 1; Rout = 1; alu_opcode = alu_xorop;
                 #15 Zin = 0; Grc = 0; Rout = 0; alu_opcode = alu_nop;
             end
             shl4 : begin
@@ -428,7 +444,7 @@ module ctrl_unit(
                 #10 Zin = 1; alu_opcode = alu_notop;
                 #15 Zin = 0; alu_opcode = alu_nop;
             end
-            add5, sub5, and5, or5, shl5, shr5, shra5, ror5, rol5, andi5, addi5, ori5, not5, neg5 : begin
+            add5, sub5, and5, or5, shl5, shr5, shra5, ror5, rol5, andi5, addi5, ori5, not5, neg5, xor5: begin
                 #10 ZLowOut = 1; Gra = 1; Rin = 1;
                 #15 ZLowOut = 0; Gra = 0; Rin = 0;
             end

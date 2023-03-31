@@ -15,8 +15,7 @@ module ram(
 
 	assign Q = (write || !read) ?  32'bZZZZZZZZ : mem[MARout];
 	
-   always @(posedge clk) begin
-	    //mem[0] = 32'hB1800000; //opcode for branch case 3 testbench 
+   always @(posedge clk) begin 
 		if(write) mem[MARout] = D;
 	end
 endmodule
