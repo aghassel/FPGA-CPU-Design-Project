@@ -10,6 +10,8 @@ input [4:0] opcode,
 input [31:0] Mdatain
 );
 
+wire [31:0] temp69;
+
 wire [31:0] BusMuxIn_R0, 
             BusMuxIn_R1, 
             BusMuxIn_R2, 
@@ -129,7 +131,8 @@ alu_test myAlu(
 	.B(BusMuxOut),
     .A(Yout),
 	.opcode(opcode),
-	.C(CRegOut)
+	.Zlow(CRegOut),
+	.Zhigh(temp69)
 	);
 
 endmodule

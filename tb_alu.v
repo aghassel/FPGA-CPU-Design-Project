@@ -7,9 +7,9 @@ module tb_alu;
     reg clk = 0;
     reg clr = 0;
     reg [wordSize-1:0] A = -16;
-    reg [wordSize-1:0] B = 2;
+    reg [wordSize-1:0] B = -2;
     reg [4:0] opcode;
-    wire [(wordSize*2)-1:0] C;
+    wire [(wordSize)-1:0] Zlow, Zhigh;
     
     alu_test #(.wordSize(wordSize)) dut (
         .clk(clk),
@@ -17,16 +17,16 @@ module tb_alu;
         .A(A),
         .B(B),
         .opcode(opcode),
-        .C(C)
+        .Zlow(Zlow),
+        .Zhigh(Zhigh)
     );
     
     initial begin
         $display("Opcode\tOutput");
         for (opcode = 1; opcode < 16; opcode = opcode + 1) begin
-            $display("%d\t%d", opcode, C);
+            $display("%d\t%d", opcode, Zlow);
             #10;
         end
-        $finish;
     end
     
     always #5 clk = ~clk;
